@@ -103,8 +103,8 @@ export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onAc
   )
 }
 
-useGLTF.preload('/artifacts/eye.glb')
-useGLTF.preload('/artifacts/eye.gltf')
+useGLTF.preload('/artifacts/3d/eye.glb')
+useGLTF.preload('/artifacts/3d/eye.gltf')
 
 export default EyeModel
 
