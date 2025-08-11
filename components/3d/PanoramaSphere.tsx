@@ -24,9 +24,9 @@ export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
       video.muted = true
       video.playsInline = true
       const onCanPlay = () => {
-        video.play().catch(() => {})
+        void video.play().catch(() => {})
         const tex = new THREE.VideoTexture(video)
-        ;(tex as any).colorSpace = (THREE as any).SRGBColorSpace
+        tex.colorSpace = THREE.SRGBColorSpace
         texture.current = tex
         material.map = tex
         material.needsUpdate = true
@@ -38,8 +38,8 @@ export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
       }
     } else {
       const loader = new THREE.TextureLoader()
-      loader.load(src, (tex) => {
-        ;(tex as any).colorSpace = (THREE as any).SRGBColorSpace
+      loader.load(src, (tex: THREE.Texture) => {
+        tex.colorSpace = THREE.SRGBColorSpace
         tex.wrapS = THREE.ClampToEdgeWrapping
         tex.wrapT = THREE.ClampToEdgeWrapping
         texture.current = tex

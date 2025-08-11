@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useRef, useState } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame, useThree, ThreeEvent } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -39,7 +39,7 @@ export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onAc
     return root
   }, [scene, scaleHint])
 
-  useFrame((_s, delta) => {
+  useFrame(() => {
     const g = groupRef.current
     if (!g) return
     if (!isDragging) {
@@ -61,23 +61,27 @@ export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onAc
       rotation={[0, 0, 0]}
       onPointerOver={(e) => (e.stopPropagation(), (document.body.style.cursor = 'pointer'))}
       onPointerOut={() => (document.body.style.cursor = 'default')}
-      onPointerDownCapture={(e) => {
+      onPointerDown={(e: ThreeEvent<PointerEvent>) => {
         e.stopPropagation()
         setDragging(true)
         const g = groupRef.current
         if (!g) return
-        dragStart.current = { x: e.clientX, y: e.clientY, rx: g.rotation.x, ry: g.rotation.y }
+        const cx = e.clientX ?? e.nativeEvent.clientX ?? 0
+        const cy = e.clientY ?? e.nativeEvent.clientY ?? 0
+        dragStart.current = { x: cx, y: cy, rx: g.rotation.x, ry: g.rotation.y }
       }}
-      onPointerMove={(e) => {
+      onPointerMove={(e: ThreeEvent<PointerEvent>) => {
         if (!isDragging || !dragStart.current) return
         const g = groupRef.current
         if (!g) return
-        const dx = (e.clientX - dragStart.current.x) / 200
-        const dy = (e.clientY - dragStart.current.y) / 200
+        const cx = e.clientX ?? e.nativeEvent.clientX ?? dragStart.current.x
+        const cy = e.clientY ?? e.nativeEvent.clientY ?? dragStart.current.y
+        const dx = (cx - dragStart.current.x) / 200
+        const dy = (cy - dragStart.current.y) / 200
         g.rotation.y = THREE.MathUtils.clamp(dragStart.current.ry + dx, -Math.PI, Math.PI)
         g.rotation.x = THREE.MathUtils.clamp(dragStart.current.rx + dy, -0.6, 0.6)
       }}
-      onPointerUpCapture={() => {
+      onPointerUp={() => {
         setDragging(false)
         dragStart.current = null
       }}

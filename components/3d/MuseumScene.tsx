@@ -1,8 +1,7 @@
 'use client'
 
-import { Suspense, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
-import * as THREE from 'three'
 import EyeModel from './EyeModel'
 
 type MuseumSceneProps = {
