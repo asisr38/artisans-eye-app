@@ -56,9 +56,11 @@ export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
-      const fov = clamp(camera.fov + Math.sign(e.deltaY) * 2.5, 35, 95)
-      camera.fov = fov
-      camera.updateProjectionMatrix()
+      const pc = camera as THREE.PerspectiveCamera
+      if (!(pc as unknown as { isPerspectiveCamera?: boolean }).isPerspectiveCamera) return
+      const fov = clamp(pc.fov + Math.sign(e.deltaY) * 2.5, 35, 95)
+      pc.fov = fov
+      pc.updateProjectionMatrix()
     }
 
     let prevDist = 0
@@ -69,9 +71,11 @@ export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
       const dist = Math.hypot(dx, dy)
       if (prevDist !== 0) {
         const delta = prevDist - dist
-        const fov = clamp(camera.fov + delta * 0.05, 35, 95)
-        camera.fov = fov
-        camera.updateProjectionMatrix()
+        const pc = camera as THREE.PerspectiveCamera
+        if (!(pc as unknown as { isPerspectiveCamera?: boolean }).isPerspectiveCamera) return
+        const fov = clamp(pc.fov + delta * 0.05, 35, 95)
+        pc.fov = fov
+        pc.updateProjectionMatrix()
       }
       prevDist = dist
     }
