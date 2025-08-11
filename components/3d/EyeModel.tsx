@@ -11,12 +11,14 @@ type EyeModelProps = {
   onActivate?: () => void
 }
 
-export const EyeModel = ({ src = '/artifacts/eye.glb', scaleHint = 0.65, onActivate }: EyeModelProps) => {
+export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onActivate }: EyeModelProps) => {
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF(src)
   const { pointer } = useThree()
   const [isDragging, setDragging] = useState(false)
   const dragStart = useRef<{ x: number; y: number; rx: number; ry: number } | null>(null)
+
+  const scaleAndFront = useRef<{ scale: number; frontZ: number; pupilR: number } | null>(null)
 
   const centeredScene = useMemo(() => {
     const root = scene.clone(true)
@@ -30,6 +32,10 @@ export const EyeModel = ({ src = '/artifacts/eye.glb', scaleHint = 0.65, onActiv
     const target = 2.0 * scaleHint // keep roughly similar to eye size
     const s = maxDim > 0 ? target / maxDim : 1
     root.scale.setScalar(s)
+    // Approximate front surface Z and pupil radius based on scaled bounds
+    const frontZ = (size.z * s) / 2
+    const pupilR = (Math.min(size.x, size.y) * s) * 0.18
+    scaleAndFront.current = { scale: s, frontZ, pupilR }
     return root
   }, [scene, scaleHint])
 
@@ -52,8 +58,7 @@ export const EyeModel = ({ src = '/artifacts/eye.glb', scaleHint = 0.65, onActiv
     <group
       ref={groupRef}
       position={[0, 0, 0]}
-      rotation={[0, Math.PI, 0]}
-      onPointerDown={onActivate}
+      rotation={[0, 0, 0]}
       onPointerOver={(e) => (e.stopPropagation(), (document.body.style.cursor = 'pointer'))}
       onPointerOut={() => (document.body.style.cursor = 'default')}
       onPointerDownCapture={(e) => {
@@ -78,6 +83,18 @@ export const EyeModel = ({ src = '/artifacts/eye.glb', scaleHint = 0.65, onActiv
       }}
     >
       <primitive object={centeredScene} />
+      {/* Invisible pupil hotspot to trigger zoom only when tapped */}
+      <mesh
+        position={[0, 0, scaleAndFront.current ? scaleAndFront.current.frontZ * 0.96 : 0.9]}
+        onPointerDown={(e) => {
+          e.stopPropagation()
+          onActivate?.()
+        }}
+        visible={false}
+      >
+        <circleGeometry args={[scaleAndFront.current ? scaleAndFront.current.pupilR : 0.18, 64]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
     </group>
   )
 }

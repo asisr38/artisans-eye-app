@@ -26,7 +26,7 @@ export const CameraRig = ({ children }: CameraRigProps) => {
 
   useFrame((_state, delta) => {
     const isMobile = viewport.width < 6
-    const lerpSpeed = isMobile ? 1.5 : 2.0
+    const lerpSpeed = phase === 'zooming' ? 4.0 : isMobile ? 1.5 : 2.0
 
     if (phase !== 'focused') {
       target.copy(cameraTargetPosition)
@@ -36,12 +36,18 @@ export const CameraRig = ({ children }: CameraRigProps) => {
         lerpSpeed,
         delta
       )
-      camera.lookAt(0, 0, 0)
+      camera.lookAt(0, phase === 'revealing' ? 0.3 : 0, 0)
     }
 
     if (phase === 'zooming') {
       const distance = camera.position.distanceTo(target)
       if (distance < 0.02) setPhase('focused')
+    }
+    if (phase === 'revealing') {
+      const distance = camera.position.distanceTo(target)
+      if (distance < 0.02) {
+        // Hold in revealing state; further flow control can transition later
+      }
     }
   })
 

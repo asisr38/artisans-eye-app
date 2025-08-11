@@ -1,13 +1,13 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
-import { Eye } from './Eye'
 import CameraRig from './CameraRig'
 import { useSceneStore } from '../state/useSceneStore'
-import Artifact from './Artifact'
-import ArtifactModel from './ArtifactModel'
+import PanoramaSphere from './PanoramaSphere'
 import { OrbitControls } from '@react-three/drei'
 import EyeModel from './EyeModel'
+import Rotator from './Rotator'
+import MuseumScene from './MuseumScene'
 
 export const HeroCanvas = () => {
   const phase = useSceneStore((s) => s.phase)
@@ -43,23 +43,30 @@ export const HeroCanvas = () => {
         <CameraRig>
           {phase !== 'focused' && (
             <group position={[0, -0.15, 0]}>
-              <EyeModel src={eyes[currentEyeIndex]?.eyeSrc} onActivate={phase === 'idle' ? triggerZoom : undefined} />
+              <Rotator enabled={phase==='idle'} speed={0.08}>
+                <EyeModel src={eyes[currentEyeIndex]?.eyeSrc || '/artifacts/3d/eye.glb'} onActivate={phase === 'idle' ? triggerZoom : undefined} />
+              </Rotator>
             </group>
           )}
           {phase === 'focused' && (
             <group>
-              <Artifact textureUrl={artifactSrc} />
+              <PanoramaSphere src={artifactSrc} />
+            </group>
+          )}
+          {phase === 'revealing' && (
+            <group>
+              <MuseumScene />
             </group>
           )}
         </CameraRig>
 
         <OrbitControls
-          enabled={phase === 'focused'}
+          enabled={phase === 'focused' || phase === 'revealing'}
           enableDamping
           dampingFactor={0.08}
           enablePan={false}
-          minDistance={0.6}
-          maxDistance={4}
+          minDistance={phase === 'revealing' ? 2 : 0.6}
+          maxDistance={phase === 'revealing' ? 10 : 4}
         />
       </Canvas>
     </div>

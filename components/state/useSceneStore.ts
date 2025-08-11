@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import * as THREE from 'three'
 import { subscribeWithSelector } from 'zustand/middleware'
 
-export type ScenePhase = 'idle' | 'zooming' | 'focused'
+export type ScenePhase = 'idle' | 'zooming' | 'revealing' | 'focused'
 export type MintPhase = 'idle' | 'preparing' | 'minting' | 'success' | 'error'
 export type FlowStep = 'showcase' | 'zoom' | 'panorama' | 'worldReveal'
 
@@ -17,6 +17,7 @@ type SceneState = {
   setCameraTargetPosition: (pos: THREE.Vector3) => void
 
   triggerZoom: () => void
+  triggerReveal: () => void
   reset: () => void
 
   artifactSrc: string
@@ -37,6 +38,8 @@ type SceneState = {
   currentEyeIndex: number
   nextEye: () => void
   prevEye: () => void
+
+  museumSrc?: string
 }
 
 export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, get) => ({
@@ -62,16 +65,21 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
     set({ phase: 'zooming', cameraTargetPosition: zoomTarget })
   },
 
+  triggerReveal: () => {
+    // Pan camera back to frame the museum room
+    set({ phase: 'revealing', cameraTargetPosition: new THREE.Vector3(0, 0.6, 6) })
+  },
+
   reset: () =>
     set({
       phase: 'idle',
       cameraTargetPosition: new THREE.Vector3(0, 0, 3),
     }),
 
-  artifactSrc: '/artifacts/IMG_0447.JPG',
+  artifactSrc: '/artifacts/360imagebeach.insv',
   setArtifactSrc: (url) => set({ artifactSrc: url }),
 
-  eyeScale: 0.65,
+  eyeScale: 0.58,
   setEyeScale: (scale) => set({ eyeScale: scale }),
 
   mintPhase: 'idle',
@@ -83,12 +91,14 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
   setFlowStep: (next) => set({ flowStep: next }),
 
   eyes: [
-    { eyeSrc: '/artifacts/eye.glb', artifactSrc: '/artifacts/IMG_0447.JPG' },
-    { eyeSrc: '/artifacts/eye.glb', artifactSrc: '/artifacts/IMG_0480.JPG' },
+    { eyeSrc: '/artifacts/3d/eye.glb', artifactSrc: '/artifacts/IMG_0447.JPG' },
+    { eyeSrc: '/artifacts/3d/eye.glb', artifactSrc: '/artifacts/IMG_0480.JPG' },
   ],
   currentEyeIndex: 0,
   nextEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex + 1) % s.eyes.length })),
   prevEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex - 1 + s.eyes.length) % s.eyes.length })),
+
+  museumSrc: '/artifacts/museumLayout.glb',
 })))
 
 
