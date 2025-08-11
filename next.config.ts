@@ -1,9 +1,6 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  experimental: {
-    optimizeCss: true,
-  },
   images: {
     // No remote patterns yet; add if needed for external images
     unoptimized: true,
