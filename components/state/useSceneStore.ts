@@ -76,7 +76,7 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
       cameraTargetPosition: new THREE.Vector3(0, 0, 3),
     }),
 
-  artifactSrc: '/artifacts/360imagebeach.insv',
+  artifactSrc: '/artifacts/IMG_20220616_141925_496.jpeg',
   setArtifactSrc: (url) => set({ artifactSrc: url }),
 
   eyeScale: 0.58,
