@@ -1,12 +1,14 @@
 'use client'
 
 import HeroOverlay from '../ui/HeroOverlay'
-import HeroCanvas from '../3d/HeroCanvas'
+import dynamic from 'next/dynamic'
 import MintPanel from '../ui/MintPanel'
 import EyeNav from '../ui/EyeNav'
 import SwipeLayer from '../ui/SwipeLayer'
 import TopNav from '../ui/TopNav'
 import BottomBar from '../ui/BottomBar'
+
+const HeroCanvas = dynamic(() => import('../3d/HeroCanvas'), { ssr: false })
 
 export const HeroRoot = () => {
   return (
