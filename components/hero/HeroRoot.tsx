@@ -5,6 +5,8 @@ import HeroCanvas from '../3d/HeroCanvas'
 import MintPanel from '../ui/MintPanel'
 import EyeNav from '../ui/EyeNav'
 import SwipeLayer from '../ui/SwipeLayer'
+import TopNav from '../ui/TopNav'
+import BottomBar from '../ui/BottomBar'
 
 export const HeroRoot = () => {
   return (
@@ -12,14 +14,11 @@ export const HeroRoot = () => {
       <SwipeLayer />
       <HeroCanvas />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/0 to-black/60" />
-      <div className="absolute inset-x-0 top-0 flex items-center justify-center p-4">
-        <h1 className="select-none text-center text-lg font-semibold tracking-wide text-amber-300">
-          The Artisan’s Eye
-        </h1>
-      </div>
+      <TopNav />
       <HeroOverlay />
       <EyeNav />
       <MintPanel />
+      <BottomBar />
     </section>
   )
 }
