@@ -10,12 +10,14 @@ export const SwipeLayer = () => {
   const startRef = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
-    const onTouchStart = (e: TouchEvent) => {
+    const onTouchStartListener: EventListener = (ev) => {
+      const e = ev as TouchEvent
       if (phase !== 'idle') return
       const t = e.touches[0]
       startRef.current = { x: t.clientX, y: t.clientY }
     }
-    const onTouchMove = (e: TouchEvent) => {
+    const onTouchMoveListener: EventListener = (ev) => {
+      const e = ev as TouchEvent
       if (phase !== 'idle' || !startRef.current) return
       const t = e.touches[0]
       const dx = t.clientX - startRef.current.x
@@ -26,16 +28,17 @@ export const SwipeLayer = () => {
         startRef.current = null
       }
     }
-    const onTouchEnd = () => {
+    const onTouchEndListener: EventListener = () => {
       startRef.current = null
     }
-    document.addEventListener('touchstart', onTouchStart, { passive: true })
-    document.addEventListener('touchmove', onTouchMove, { passive: true })
-    document.addEventListener('touchend', onTouchEnd)
+    const el = document
+    el.addEventListener('touchstart', onTouchStartListener, { passive: true })
+    el.addEventListener('touchmove', onTouchMoveListener, { passive: true })
+    el.addEventListener('touchend', onTouchEndListener)
     return () => {
-      document.removeEventListener('touchstart', onTouchStart)
-      document.removeEventListener('touchmove', onTouchMove)
-      document.removeEventListener('touchend', onTouchEnd)
+      el.removeEventListener('touchstart', onTouchStartListener)
+      el.removeEventListener('touchmove', onTouchMoveListener)
+      el.removeEventListener('touchend', onTouchEndListener)
     }
   }, [phase, nextEye, prevEye])
 

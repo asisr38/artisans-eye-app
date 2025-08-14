@@ -98,7 +98,7 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
   nextEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex + 1) % s.eyes.length })),
   prevEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex - 1 + s.eyes.length) % s.eyes.length })),
 
-  museumSrc: '/artifacts/museumLayout.glb',
+  museumSrc: '/artifacts/3d/Museum.glb',
 })))
 
 

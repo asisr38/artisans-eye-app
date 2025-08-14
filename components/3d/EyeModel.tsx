@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree, ThreeEvent } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -29,7 +29,7 @@ export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onAc
     box.getCenter(center)
     root.position.sub(center)
     const maxDim = Math.max(size.x, size.y, size.z)
-    const target = 2.0 * scaleHint // keep roughly similar to eye size
+    const target = 2.0 * scaleHint
     const s = maxDim > 0 ? target / maxDim : 1
     root.scale.setScalar(s)
     // Approximate front surface Z and pupil radius based on scaled bounds
@@ -53,6 +53,14 @@ export const EyeModel = ({ src = '/artifacts/3d/eye.glb', scaleHint = 0.65, onAc
       g.rotation.y = THREE.MathUtils.clamp(nextY, -0.35, 0.35)
     }
   })
+
+  useEffect(() => {
+    return () => {
+      try {
+        document.body.style.cursor = 'default'
+      } catch {}
+    }
+  }, [])
 
   return (
     <group

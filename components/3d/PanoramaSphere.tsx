@@ -11,10 +11,27 @@ type PanoramaSphereProps = {
 
 export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
   const texture = useRef<THREE.Texture | null>(null)
+  const videoEl = useRef<HTMLVideoElement | null>(null)
   const material = useMemo(() => new THREE.MeshBasicMaterial({ side: THREE.BackSide }), [])
   const { camera, gl } = useThree()
 
   useEffect(() => {
+    // Cleanup any previous resources before loading new
+    if (texture.current) {
+      texture.current.dispose()
+      texture.current = null
+    }
+    if (videoEl.current) {
+      try {
+        videoEl.current.pause()
+      } catch {}
+      videoEl.current.src = ''
+      videoEl.current.load()
+      videoEl.current = null
+    }
+    material.map = null
+    material.needsUpdate = true
+
     const isVideo = /\.(mp4|webm|insv)$/i.test(src)
     if (isVideo) {
       const video = document.createElement('video')
@@ -32,22 +49,56 @@ export const PanoramaSphere = ({ src, radius = 10 }: PanoramaSphereProps) => {
         material.needsUpdate = true
       }
       video.addEventListener('canplay', onCanPlay)
+      videoEl.current = video
       return () => {
         video.removeEventListener('canplay', onCanPlay)
-        video.pause()
+        try {
+          video.pause()
+        } catch {}
+        video.src = ''
+        video.load()
+        if (texture.current) {
+          texture.current.dispose()
+          texture.current = null
+        }
       }
-    } else {
-      const loader = new THREE.TextureLoader()
-      loader.load(src, (tex: THREE.Texture) => {
-        tex.colorSpace = THREE.SRGBColorSpace
-        tex.wrapS = THREE.ClampToEdgeWrapping
-        tex.wrapT = THREE.ClampToEdgeWrapping
-        texture.current = tex
-        material.map = tex
-        material.needsUpdate = true
-      })
+    }
+
+    const loader = new THREE.TextureLoader()
+    let isDisposed = false
+    loader.load(src, (tex: THREE.Texture) => {
+      if (isDisposed) {
+        tex.dispose()
+        return
+      }
+      tex.colorSpace = THREE.SRGBColorSpace
+      tex.wrapS = THREE.ClampToEdgeWrapping
+      tex.wrapT = THREE.ClampToEdgeWrapping
+      texture.current = tex
+      material.map = tex
+      material.needsUpdate = true
+    })
+    return () => {
+      isDisposed = true
+      if (texture.current) {
+        texture.current.dispose()
+        texture.current = null
+      }
     }
   }, [src, material])
+
+  // Dispose material on unmount
+  useEffect(() => {
+    return () => {
+      try {
+        if (material.map) {
+          material.map.dispose()
+          material.map = null
+        }
+        material.dispose()
+      } catch {}
+    }
+  }, [material])
 
   // Wheel and pinch-to-zoom that adjusts camera FOV (panorama-friendly)
   useEffect(() => {
