@@ -92,7 +92,6 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
 
   eyes: [
     { eyeSrc: '/artifacts/3d/eye.glb', artifactSrc: '/artifacts/IMG_0447.JPG' },
-    { eyeSrc: '/artifacts/3d/eye.glb', artifactSrc: '/artifacts/IMG_0480.JPG' },
   ],
   currentEyeIndex: 0,
   nextEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex + 1) % s.eyes.length })),

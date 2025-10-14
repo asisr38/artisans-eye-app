@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useMemo } from 'react'
+import Link from 'next/link'
 import { useSceneStore } from '../state/useSceneStore'
 
 export const TopNav = () => {
@@ -70,6 +71,14 @@ export const TopNav = () => {
           >
             Mint
           </button>
+          <Link
+            href="/brief"
+            className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+            aria-label="Open Project Brief"
+            tabIndex={0}
+          >
+            Brief
+          </Link>
           <div className="ml-2 hidden rounded-full bg-white/10 px-2 py-1 text-[10px] text-white/80 md:block">
             {phaseLabel}
           </div>

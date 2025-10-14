@@ -12,6 +12,7 @@ export const EyeNav = () => {
   const handleNext = useCallback(() => nextEye(), [nextEye])
   const handlePrev = useCallback(() => prevEye(), [prevEye])
 
+  if (total <= 1) return null
   return (
     <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-4">
       <button

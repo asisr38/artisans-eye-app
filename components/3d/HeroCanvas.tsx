@@ -7,7 +7,6 @@ import { useSceneStore } from '../state/useSceneStore'
 import PanoramaSphere from './PanoramaSphere'
 import { OrbitControls } from '@react-three/drei'
 import EyeModel from './EyeModel'
-import Rotator from './Rotator'
 import MuseumScene from './MuseumScene'
 
 const GLContextEvents = () => {
@@ -56,13 +55,13 @@ export const HeroCanvas = () => {
         <CameraRig>
           {phase !== 'focused' && (
             <group position={[0, -0.15, 0]}>
-              <Rotator enabled={phase==='idle'} speed={0.08}>
+              <group rotation={[0, Math.PI, 0]}>
                 <EyeModel
                   src={eyes[currentEyeIndex]?.eyeSrc || '/artifacts/3d/eye.glb'}
                   scaleHint={eyeScale}
                   onActivate={phase === 'idle' ? triggerZoom : undefined}
                 />
-              </Rotator>
+              </group>
             </group>
           )}
           {phase === 'focused' && (
