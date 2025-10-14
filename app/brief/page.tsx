@@ -21,9 +21,7 @@ export default function WebsiteBriefPage() {
       </header>
       <section className="mx-auto grid max-w-4xl grid-cols-1 gap-4 p-3 pt-0 md:gap-6 md:p-10 md:pt-0">
         <div>
-          <BasicWebsiteBriefForm
-            onFocusKeyChange={setActiveKey}
-          />
+          <BasicWebsiteBriefForm />
         </div>
       </section>
     </main>

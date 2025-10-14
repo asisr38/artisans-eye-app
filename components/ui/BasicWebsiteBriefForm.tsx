@@ -78,7 +78,7 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
           body: JSON.stringify({ ...form, timestamp: ts }),
         })
         // ignore response body for UI; show local JSON preview
-      } catch (_err) {
+      } catch {
         // Swallow network errors in demo mode
       } finally {
         setSubmitted(true)
