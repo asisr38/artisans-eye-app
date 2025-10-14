@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import BasicWebsiteBriefForm from '../../components/ui/BasicWebsiteBriefForm'
 
@@ -19,7 +19,12 @@ export default function WebsiteBriefPage() {
     roughness: 0.35,
     envIntensity: 0.8,
     background: '#eef2ff',
+    lightColor: '#ffffff',
+    backgroundImageUrl: '',
   })
+  const handleCaptureRef = useCallback((fn: () => Promise<string>) => {
+    setCaptureFn(() => fn)
+  }, [])
 
   return (
     <main className="min-h-svh w-full bg-gray-50 text-gray-900">
@@ -39,7 +44,7 @@ export default function WebsiteBriefPage() {
         <div className="order-1 md:order-2">
           <div className="sticky top-4 w-full md:top-10">
             <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl shadow">
-              <FormEyeCanvas activeKey={activeKey} visual={visual} onCaptureRef={(fn) => setCaptureFn(() => fn)} />
+              <FormEyeCanvas activeKey={activeKey} visual={visual} onCaptureRef={handleCaptureRef} />
             </div>
             <div className="mt-3 flex items-center gap-3">
               <button

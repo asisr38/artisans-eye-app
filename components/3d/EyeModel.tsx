@@ -87,8 +87,8 @@ export const EyeModel = ({
             mat.color.copy(c)
           }
           if (hasMetal) mat.metalness = THREE.MathUtils.clamp(metalness as number, 0, 1)
-          if (hasRough) mat.roughness = THREE.MathUtils.clamp(roughness as number, 0, 1)
-          if (hasEnv) (mat as any).envMapIntensity = THREE.MathUtils.clamp(envIntensity as number, 0, 5)
+          if (hasRough) mat.roughness = THREE.MathUtils.clamp(roughness as number, 0, 0.3) // Lower max roughness for shinier appearance
+          if (hasEnv) mat.envMapIntensity = THREE.MathUtils.clamp(envIntensity as number, 0, 5)
           mat.needsUpdate = true
         })
       }
@@ -117,7 +117,7 @@ export const EyeModel = ({
         const idleAmp = 0.01
         const idleX = Math.sin(t) * idleAmp
         const idleY = Math.sin(t * 0.8) * idleAmp
-        const targetX = isHovering ? -pointer.y * 0.35 : 0
+        const targetX = isHovering ? pointer.y * 0.35 : 0
         const targetY = isHovering ? -pointer.x * 0.5 : 0
         const nextX = THREE.MathUtils.lerp(g.rotation.x, targetX + idleX, 0.12)
         const nextY = THREE.MathUtils.lerp(g.rotation.y, targetY + idleY, 0.12)
@@ -166,7 +166,8 @@ export const EyeModel = ({
         const dx = (cx - dragStart.current.x) / 200
         const dy = (cy - dragStart.current.y) / 200
         g.rotation.y = THREE.MathUtils.clamp(dragStart.current.ry + dx, -Math.PI, Math.PI)
-        g.rotation.x = THREE.MathUtils.clamp(dragStart.current.rx + dy, -0.6, 0.6)
+        // Invert vertical so dragging up looks up
+        g.rotation.x = THREE.MathUtils.clamp(dragStart.current.rx - dy, -0.6, 0.6)
         // Estimate velocity based on recent rotation change
         if (lastRotation.current) {
           rotationVelocity.current.vx = THREE.MathUtils.clamp(g.rotation.x - lastRotation.current.rx, -0.2, 0.2)

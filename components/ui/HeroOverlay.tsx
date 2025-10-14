@@ -27,6 +27,11 @@ export const HeroOverlay = () => {
 
   return (
     <div className="pointer-events-none absolute inset-0 flex items-end justify-center p-6">
+      {/* Simple 2D headline for home page */}
+      <div className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2 select-none text-center text-white">
+        <h1 className="text-2xl font-bold tracking-tight md:text-4xl">The Artisan’s Eye</h1>
+        <p className="mt-1 text-sm text-white/80 md:text-base">Explore artifacts through an attentive gaze.</p>
+      </div>
       <button
         type="button"
         onClick={handleActivate}

@@ -1,7 +1,7 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useMemo, useRef } from 'react'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import EyeModel from './EyeModel'
 
@@ -12,6 +12,8 @@ type EyeVisual = {
   roughness?: number
   envIntensity?: number
   background?: string
+  lightColor?: string
+  backgroundImageUrl?: string
 }
 
 type FormEyeCanvasProps = {
@@ -100,17 +102,25 @@ const EyeFocusRig = ({ activeKey, visual }: { activeKey?: string; visual?: EyeVi
 export default function FormEyeCanvas({ activeKey, visual, onCaptureRef }: FormEyeCanvasProps) {
   const glRef = useRef<any>(null)
 
-  // Provide capture function to parent: returns data URL
-  if (onCaptureRef) {
-    onCaptureRef(async () => {
+  // Provide capture function to parent after mount
+  const providedRefOnce = useRef(false)
+  useEffect(() => {
+    if (!onCaptureRef || providedRefOnce.current) return
+    const capture = async () => {
       const gl = glRef.current
       if (!gl) return ''
-      const prev = gl.domElement.toDataURL('image/png')
-      return prev
-    })
-  }
+      return gl.domElement.toDataURL('image/png')
+    }
+    onCaptureRef(capture)
+    providedRefOnce.current = true
+  }, [onCaptureRef])
 
   const bg = useMemo(() => new THREE.Color(visual?.background || '#f6f7ff'), [visual?.background])
+  const light = useMemo(() => new THREE.Color(visual?.lightColor || visual?.irisColor || '#ffffff'), [visual?.lightColor, visual?.irisColor])
+
+  const texture = visual?.backgroundImageUrl
+    ? useLoader(THREE.TextureLoader, visual.backgroundImageUrl)
+    : null
 
   return (
     <Canvas
@@ -119,8 +129,14 @@ export default function FormEyeCanvas({ activeKey, visual, onCaptureRef }: FormE
       onCreated={(state) => (glRef.current = state.gl)}
     >
       <color attach="background" args={[bg.r, bg.g, bg.b]} />
-      <ambientLight intensity={0.6} />
-      <directionalLight intensity={1} position={[2, 3, 4]} />
+      <ambientLight intensity={0.6} color={light} />
+      <directionalLight intensity={1} position={[2, 3, 4]} color={light} />
+      {texture && (
+        <mesh position={[0, 0, -0.5]}>
+          <planeGeometry args={[6, 6]} />
+          <meshBasicMaterial map={texture} />
+        </mesh>
+      )}
       <EyeFocusRig activeKey={activeKey} visual={visual} />
     </Canvas>
   )

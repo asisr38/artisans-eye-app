@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 
 type BasicWebsiteBriefFormProps = {
   onFocusKeyChange?: (key: string) => void
@@ -34,6 +33,8 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
     wantsCMS: false,
     wantsMaintenance: false,
     notes: '',
+    backgroundImageUrl: '',
+    lightColor: '',
   })
 
   const [submitted, setSubmitted] = useState(false)
@@ -66,7 +67,27 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
+    const ts = new Date().toISOString()
+    setForm((f) => ({ ...f, timestamp: ts }))
+    ;(async () => {
+      try {
+        const res = await fetch('/api/brief/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...form, timestamp: ts }),
+        })
+        // ignore response body for UI; show local JSON preview
+        if (!res.ok) {
+          // eslint-disable-next-line no-console
+          console.error('Submit failed')
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err)
+      } finally {
+        setSubmitted(true)
+      }
+    })()
   }
 
   // Suggest a visual theme from content heuristics
@@ -132,19 +153,6 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
       <p className="mb-6 text-gray-600">Fill this form to describe your business and website goals.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Timestamp</label>
-          <input
-            type="text"
-            value={form.timestamp}
-            onChange={(e) => handleChange('timestamp', e.target.value)}
-            onFocus={() => handleFocus('timestamp')}
-            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="MM/DD/YYYY hh:mm:ss"
-            aria-label="Timestamp"
-            tabIndex={0}
-          />
-        </div>
         <div>
           <label className="mb-1 block text-sm font-medium">What is your business name?</label>
           <input
@@ -338,24 +346,43 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
           />
         </div>
 
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium">Background image URL (optional)</label>
+            <input
+              type="url"
+              value={form.backgroundImageUrl}
+              onChange={(e) => handleChange('backgroundImageUrl', e.target.value)}
+              onFocus={() => handleFocus('notes')}
+              className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Background image URL"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium">Light color (hex/rgb)</label>
+            <input
+              type="text"
+              value={form.lightColor}
+              onChange={(e) => handleChange('lightColor', e.target.value)}
+              onFocus={() => handleFocus('notes')}
+              className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Light color"
+              placeholder="#ffffff"
+            />
+          </div>
+        </div>
+
         <button type="submit" className="rounded-lg bg-black px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-black">
           Submit
         </button>
       </form>
 
-      <AnimatePresence>
-        {submitted && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="mt-6 rounded-lg border bg-green-50 p-4"
-          >
-            <p className="mb-2 text-sm font-medium">Form Submitted (Demo)</p>
-            <pre className="max-h-[320px] overflow-auto rounded-lg border bg-white p-2 text-xs">{JSON.stringify(form, null, 2)}</pre>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {submitted && (
+        <div className="mt-6 rounded-lg border bg-green-50 p-4 opacity-100 transition-opacity duration-300">
+          <p className="mb-2 text-sm font-medium">Form Submitted (Demo)</p>
+          <pre className="max-h-[320px] overflow-auto rounded-lg border bg-white p-2 text-xs">{JSON.stringify(form, null, 2)}</pre>
+        </div>
+      )}
     </div>
   )
 }
