@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
+// Use edge for universal availability (avoids region cold starts)
+export const runtime = 'edge'
 
 export async function GET() {
   return NextResponse.json({

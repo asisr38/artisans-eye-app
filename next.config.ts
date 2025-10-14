@@ -1,13 +1,28 @@
 import type { NextConfig } from 'next'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  output: 'standalone',
+  productionBrowserSourceMaps: false,
+  eslint: {
+    // Avoid blocking production builds on lint errors; CI can enforce separately
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Keep type checking on, but do not emit; Next already type-checks in build step
+    ignoreBuildErrors: false,
+  },
   images: {
     // No remote patterns yet; add if needed for external images
     unoptimized: true,
   },
+  compiler: {
+    removeConsole: isProd ? { exclude: ['error'] } : false,
+  },
   experimental: {
-    // Dev-only; comment out or adjust per Next.js compatibility
-    // allowedDevOrigins is experimental; remove for production builds
+    // Intentionally empty for production stability
   },
   webpack: (config) => {
     // Silence video texture warnings in some host environments
