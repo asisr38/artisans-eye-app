@@ -78,10 +78,7 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
           body: JSON.stringify({ ...form, timestamp: ts }),
         })
         // ignore response body for UI; show local JSON preview
-        if (!res.ok) {
-          // eslint-disable-next-line no-console
-          console.error('Submit failed')
-        }
+        // Ignore non-200 in demo mode
       } catch (_err) {
         // Swallow network errors in demo mode
       } finally {
