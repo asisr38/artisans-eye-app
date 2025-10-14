@@ -5,7 +5,6 @@ import Link from 'next/link'
 import BasicWebsiteBriefForm from '../../components/ui/BasicWebsiteBriefForm'
 
 export default function WebsiteBriefPage() {
-  const [activeKey, setActiveKey] = useState<string>('')
 
   // Avoid any hydration differences on mobile (date, UA-dependent attrs)
   const [mounted, setMounted] = useState(false)

@@ -72,13 +72,12 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
     setForm((f) => ({ ...f, timestamp: ts }))
     ;(async () => {
       try {
-        const res = await fetch('/api/brief/submit', {
+        await fetch('/api/brief/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...form, timestamp: ts }),
         })
         // ignore response body for UI; show local JSON preview
-        // Ignore non-200 in demo mode
       } catch (_err) {
         // Swallow network errors in demo mode
       } finally {
