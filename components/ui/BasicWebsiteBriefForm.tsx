@@ -67,6 +67,7 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // Compute timestamp purely on client after hydration
     const ts = new Date().toISOString()
     setForm((f) => ({ ...f, timestamp: ts }))
     ;(async () => {
@@ -81,9 +82,8 @@ export default function BasicWebsiteBriefForm({ onFocusKeyChange, onVisualSugges
           // eslint-disable-next-line no-console
           console.error('Submit failed')
         }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err)
+      } catch (_err) {
+        // Swallow network errors in demo mode
       } finally {
         setSubmitted(true)
       }

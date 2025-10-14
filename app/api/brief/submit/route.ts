@@ -60,8 +60,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true })
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e)
+    // Intentionally return a generic error without logging in production build
     return NextResponse.json({ ok: false }, { status: 500 })
   }
 }

@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSceneStore } from '../state/useSceneStore'
 
 export const TopNav = () => {
+  const [menuOpen, setMenuOpen] = useState(false)
   const phase = useSceneStore((s) => s.phase)
   const setMintPanelOpen = useSceneStore((s) => s.setMintPanelOpen)
   const triggerZoom = useSceneStore((s) => s.triggerZoom)
@@ -19,6 +20,16 @@ export const TopNav = () => {
     triggerReveal()
   }, [triggerReveal])
   const handleMint = useCallback(() => setMintPanelOpen(true), [setMintPanelOpen])
+  const handleToggleMenu = useCallback(() => setMenuOpen((v) => !v), [])
+  const handleCloseMenu = useCallback(() => setMenuOpen(false), [])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const phaseLabel = useMemo(() => {
     if (phase === 'idle') return 'Showcase'
@@ -34,7 +45,8 @@ export const TopNav = () => {
         <div className="pointer-events-auto select-none pl-2 text-sm font-semibold tracking-wide text-amber-300">
           The Artisan’s Eye
         </div>
-        <div className="pointer-events-auto flex items-center gap-1">
+        {/* Desktop actions */}
+        <div className="pointer-events-auto hidden items-center gap-1 md:flex">
           <button
             type="button"
             className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
@@ -81,6 +93,81 @@ export const TopNav = () => {
           </Link>
           <div className="ml-2 hidden rounded-full bg-white/10 px-2 py-1 text-[10px] text-white/80 md:block">
             {phaseLabel}
+          </div>
+        </div>
+
+        {/* Mobile hamburger */}
+        <div className="pointer-events-auto md:hidden">
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-controls="topnav-menu"
+            aria-expanded={menuOpen}
+            onClick={handleToggleMenu}
+            className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu panel */}
+      <div
+        id="topnav-menu"
+        className={`pointer-events-auto mx-auto w-[min(1024px,96%)] md:hidden ${
+          menuOpen ? 'block' : 'hidden'
+        }`}
+      >
+        <div className="mt-2 rounded-2xl border border-white/10 bg-black/70 p-2 text-white backdrop-blur-md">
+          <div className="grid gap-1">
+            <button
+              type="button"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+              onClick={() => {
+                handleShowcase()
+                handleCloseMenu()
+              }}
+            >
+              Showcase
+            </button>
+            <button
+              type="button"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+              onClick={() => {
+                handlePanorama()
+                handleCloseMenu()
+              }}
+            >
+              Panorama
+            </button>
+            <button
+              type="button"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+              onClick={() => {
+                handleReveal()
+                handleCloseMenu()
+              }}
+            >
+              Reveal
+            </button>
+            <button
+              type="button"
+              className="w-full rounded-lg bg-amber-600/90 px-3 py-2 text-left text-sm font-semibold text-white hover:bg-amber-500"
+              onClick={() => {
+                handleMint()
+                handleCloseMenu()
+              }}
+            >
+              Mint
+            </button>
+            <Link
+              href="/brief"
+              onClick={handleCloseMenu}
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+            >
+              Brief
+            </Link>
+            <div className="mt-1 rounded-lg bg-white/10 px-3 py-1 text-[11px] text-white/80">{phaseLabel}</div>
           </div>
         </div>
       </div>

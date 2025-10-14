@@ -49,7 +49,7 @@ export const HeroCanvas = () => {
       >
         <GLContextEvents />
         <color attach="background" args={[0.04, 0.04, 0.04]} />
-        <ambientLight intensity={0.45} />
+        <ambientLight intensity={0.45}  color={'#ffd7a6'}/>
         <directionalLight intensity={0.9} position={[2, 3, 4]} />
 
         <CameraRig>

@@ -1,7 +1,7 @@
 'use client'
 
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { useEffect, useMemo, useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import EyeModel from './EyeModel'
 
@@ -100,7 +100,7 @@ const EyeFocusRig = ({ activeKey, visual }: { activeKey?: string; visual?: EyeVi
 }
 
 export default function FormEyeCanvas({ activeKey, visual, onCaptureRef }: FormEyeCanvasProps) {
-  const glRef = useRef<any>(null)
+  const glRef = useRef<THREE.WebGLRenderer | null>(null)
 
   // Provide capture function to parent after mount
   const providedRefOnce = useRef(false)
@@ -118,9 +118,28 @@ export default function FormEyeCanvas({ activeKey, visual, onCaptureRef }: FormE
   const bg = useMemo(() => new THREE.Color(visual?.background || '#f6f7ff'), [visual?.background])
   const light = useMemo(() => new THREE.Color(visual?.lightColor || visual?.irisColor || '#ffffff'), [visual?.lightColor, visual?.irisColor])
 
-  const texture = visual?.backgroundImageUrl
-    ? useLoader(THREE.TextureLoader, visual.backgroundImageUrl)
-    : null
+  const [bgTexture, setBgTexture] = useState<THREE.Texture | null>(null)
+  useEffect(() => {
+    if (!visual?.backgroundImageUrl) {
+      setBgTexture(null)
+      return
+    }
+    let isActive = true
+    const loader = new THREE.TextureLoader()
+    loader.load(
+      visual.backgroundImageUrl,
+      (tex) => {
+        if (isActive) setBgTexture(tex)
+      },
+      undefined,
+      () => {
+        if (isActive) setBgTexture(null)
+      }
+    )
+    return () => {
+      isActive = false
+    }
+  }, [visual?.backgroundImageUrl])
 
   return (
     <Canvas
@@ -131,10 +150,10 @@ export default function FormEyeCanvas({ activeKey, visual, onCaptureRef }: FormE
       <color attach="background" args={[bg.r, bg.g, bg.b]} />
       <ambientLight intensity={0.6} color={light} />
       <directionalLight intensity={1} position={[2, 3, 4]} color={light} />
-      {texture && (
+      {bgTexture && (
         <mesh position={[0, 0, -0.5]}>
           <planeGeometry args={[6, 6]} />
-          <meshBasicMaterial map={texture} />
+          <meshBasicMaterial map={bgTexture} />
         </mesh>
       )}
       <EyeFocusRig activeKey={activeKey} visual={visual} />
