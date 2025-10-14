@@ -28,8 +28,8 @@ export default function ScrollProgress() {
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
-      window.removeEventListener('scroll', onScroll as any)
-      window.removeEventListener('resize', onScroll as any)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])

@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true })
-  } catch (e) {
+  } catch (_e) {
     // Intentionally return a generic error without logging in production build
     return NextResponse.json({ ok: false }, { status: 500 })
   }

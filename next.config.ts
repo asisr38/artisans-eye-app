@@ -6,14 +6,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   experimental: {
-    // Allow dev access from phone over LAN; add your device IP(s) here
-    allowedDevOrigins: [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      // Example: replace with your LAN IP(s)
-      'http://192.168.0.0:3000',
-      'http://192.168.1.0:3000',
-    ],
+    // Dev-only; comment out or adjust per Next.js compatibility
+    // allowedDevOrigins is experimental; remove for production builds
   },
   webpack: (config) => {
     // Silence video texture warnings in some host environments
