@@ -180,6 +180,13 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Prevent mobile rubber-band/overscroll on hero */
+body.no-scroll {
+  position: fixed;
+  width: 100%;
+  overscroll-behavior: none;
+}
+
 body.no-scroll {
   overflow-y: hidden !important;
   height: 100vh !important;

@@ -13,6 +13,14 @@ const HeroCanvas = dynamic(() => import('../3d/HeroCanvas'), { ssr: false })
 export const HeroRoot = () => {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    // Prevent initial scroll on mobile while on the hero screen
+    const hadNoScroll = document.body.classList.contains('no-scroll')
+    document.body.classList.add('no-scroll')
+    return () => {
+      if (!hadNoScroll) document.body.classList.remove('no-scroll')
+    }
+  }, [])
   if (!mounted) return null
   return (
     <section className="relative min-h-svh w-full overflow-hidden bg-black text-white" suppressHydrationWarning>

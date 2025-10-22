@@ -120,7 +120,7 @@ export default function ShowcasePage() {
       <TopNav />
       <div className="w-full px-4 py-3 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
-          <p className="text-secondary text-xs md:text-sm mb-3">Discover unique digital artifacts linked to physical craftsmanship</p>
+          <p className="text-gray-400 text-xs md:text-sm mb-3">Discover unique digital artifacts linked to physical craftsmanship</p>
           {/* Search and Filter Controls */}
           <div className="mb-3">
             {/* Search Bar */}
@@ -263,7 +263,7 @@ export default function ShowcasePage() {
           <div className="w-full h-full overflow-y-auto">
             <div className="artifact-grid p-4">
               {artifacts.map(artifact => (
-                <div key={artifact.id} className="artifact-card bg-secondary rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
+                <div key={artifact.id} className="artifact-card bg-gray-900/50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
                   <div className="aspect-square relative overflow-hidden">
                     <OptimizedImage
                       src={artifact.image}
@@ -284,23 +284,23 @@ export default function ShowcasePage() {
 
                   <div className="card-body p-3 space-y-2">
                     <div>
-                      <h3 className="text-sm font-semibold text-primary mb-0.5 group-hover:text-accent transition-colors line-clamp-1">{artifact.title}</h3>
-                      <p className="text-secondary text-xs">by {artifact.artist}</p>
+                      <h3 className="text-sm font-semibold text-white mb-0.5 group-hover:text-amber-400 transition-colors line-clamp-1">{artifact.title}</h3>
+                      <p className="text-gray-400 text-xs">by {artifact.artist}</p>
                     </div>
 
-                    <p className="text-secondary text-xs leading-relaxed line-clamp-2">{artifact.description}</p>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">{artifact.description}</p>
 
                     <div className="flex items-center justify-between pt-1">
                       <div className="flex items-center gap-1">
-                        <span className="text-accent font-bold text-sm">{artifact.price} {artifact.currency}</span>
-                        <span className="text-tertiary text-xs font-medium capitalize px-1 py-0.5 bg-tertiary/20 rounded">{artifact.saleType}</span>
+                        <span className="text-amber-400 font-bold text-sm">{artifact.price} {artifact.currency}</span>
+                        <span className="text-gray-500 text-xs font-medium capitalize px-1 py-0.5 bg-gray-800 rounded">{artifact.saleType}</span>
                       </div>
-                      <div className="text-tertiary text-xs font-medium capitalize px-1 py-0.5 bg-secondary/50 rounded">{artifact.category}</div>
+                      <div className="text-gray-500 text-xs font-medium capitalize px-1 py-0.5 bg-gray-800 rounded">{artifact.category}</div>
                     </div>
 
                     <Link
                       href={`/artifact/${artifact.id}`}
-                      className="w-full mt-2 py-1.5 gradient-primary text-primary font-semibold rounded text-center hover:shadow-md hover:-translate-y-0.5 text-xs transition-all block"
+                      className="w-full mt-2 py-1.5 bg-amber-500 text-black font-semibold rounded text-center hover:shadow-md hover:-translate-y-0.5 text-xs transition-all block"
                     >
                       View Details
                     </Link>
