@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
 
 // Lazy load 3D components to improve initial page load
