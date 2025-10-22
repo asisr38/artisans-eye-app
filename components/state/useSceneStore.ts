@@ -19,17 +19,16 @@ type SceneState = {
   triggerZoom: () => void
   triggerReveal: () => void
   reset: () => void
+  mintPhase: MintPhase
+  setMintPhase: (next: MintPhase) => void
+  isMintPanelOpen: boolean
+  setMintPanelOpen: (open: boolean) => void
 
   artifactSrc: string
   setArtifactSrc: (url: string) => void
 
   eyeScale: number
   setEyeScale: (scale: number) => void
-
-  mintPhase: MintPhase
-  setMintPhase: (next: MintPhase) => void
-  isMintPanelOpen: boolean
-  setMintPanelOpen: (open: boolean) => void
 
   flowStep: FlowStep
   setFlowStep: (next: FlowStep) => void
@@ -76,16 +75,11 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
       cameraTargetPosition: new THREE.Vector3(0, 0, 3),
     }),
 
-  artifactSrc: '/artifacts/IMG_20220616_141925_496.jpeg',
+  artifactSrc: '/artifacts/IMG_0447.JPG',
   setArtifactSrc: (url) => set({ artifactSrc: url }),
 
   eyeScale: 0.58,
   setEyeScale: (scale) => set({ eyeScale: scale }),
-
-  mintPhase: 'idle',
-  setMintPhase: (next) => set({ mintPhase: next }),
-  isMintPanelOpen: false,
-  setMintPanelOpen: (open) => set({ isMintPanelOpen: open }),
 
   flowStep: 'showcase',
   setFlowStep: (next) => set({ flowStep: next }),
@@ -96,6 +90,11 @@ export const useSceneStore = create<SceneState>()(subscribeWithSelector((set, ge
   currentEyeIndex: 0,
   nextEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex + 1) % s.eyes.length })),
   prevEye: () => set((s) => ({ currentEyeIndex: (s.currentEyeIndex - 1 + s.eyes.length) % s.eyes.length })),
+
+  mintPhase: 'idle',
+  setMintPhase: (next) => set({ mintPhase: next }),
+  isMintPanelOpen: false,
+  setMintPanelOpen: (open) => set({ isMintPanelOpen: open }),
 
   museumSrc: '/artifacts/3d/Museum.glb',
 })))

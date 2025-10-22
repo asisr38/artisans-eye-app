@@ -6,7 +6,6 @@ import { useSceneStore } from '../state/useSceneStore'
 export const HeroOverlay = () => {
   const phase = useSceneStore((s) => s.phase)
   const triggerZoom = useSceneStore((s) => s.triggerZoom)
-  const setMintPanelOpen = useSceneStore((s) => s.setMintPanelOpen)
   const triggerReveal = useSceneStore((s) => s.triggerReveal)
 
   const handleActivate = useCallback(() => {
@@ -18,10 +17,7 @@ export const HeroOverlay = () => {
       triggerReveal()
       return
     }
-    if (phase === 'revealing') {
-      setMintPanelOpen(true)
-    }
-  }, [phase, triggerZoom, triggerReveal, setMintPanelOpen])
+  }, [phase, triggerZoom, triggerReveal])
 
   const isIdle = phase === 'idle'
 
@@ -38,7 +34,7 @@ export const HeroOverlay = () => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') handleActivate()
         }}
-        aria-label={isIdle ? 'Tap to reveal artifact' : phase === 'focused' ? 'Reveal the world' : 'Mint this artifact'}
+        aria-label={isIdle ? 'Tap to reveal artifact' : 'Reveal the world'}
         tabIndex={0}
         className={`pointer-events-auto select-none rounded-full px-6 py-3.5 text-center text-base font-semibold text-white shadow-lg transition-all duration-300 ${
           isIdle
@@ -46,7 +42,7 @@ export const HeroOverlay = () => {
             : 'bg-amber-600/90 hover:bg-amber-500'
         } backdrop-blur-md border border-white/10`}
       >
-        {isIdle ? 'Tap to Reveal' : phase === 'focused' ? 'Reveal World' : 'Mint This Artifact'}
+        {isIdle ? 'Tap to Reveal' : 'Reveal World'}
       </button>
     </div>
   )

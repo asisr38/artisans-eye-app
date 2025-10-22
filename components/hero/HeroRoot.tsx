@@ -2,7 +2,6 @@
 
 import HeroOverlay from '../ui/HeroOverlay'
 import dynamic from 'next/dynamic'
-import MintPanel from '../ui/MintPanel'
 import EyeNav from '../ui/EyeNav'
 import SwipeLayer from '../ui/SwipeLayer'
 import TopNav from '../ui/TopNav'
@@ -23,7 +22,6 @@ export const HeroRoot = () => {
       <TopNav />
       <HeroOverlay />
       <EyeNav />
-      <MintPanel />
       <BottomBar />
     </section>
   )

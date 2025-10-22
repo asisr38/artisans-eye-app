@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
     config.module.parser = {
       ...config.module.parser,
       javascript: {
-        ...((config.module as any).parser?.javascript || {}),
+        ...(config.module.parser as any)?.javascript || {},
         url: 'relative',
       },
     }

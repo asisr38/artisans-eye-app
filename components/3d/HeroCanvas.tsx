@@ -4,10 +4,10 @@ import { Canvas, useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
 import CameraRig from './CameraRig'
 import { useSceneStore } from '../state/useSceneStore'
-import PanoramaSphere from './PanoramaSphere'
 import { OrbitControls } from '@react-three/drei'
-import EyeModel from './EyeModel'
-import MuseumScene from './MuseumScene'
+import { EyeModel, MuseumScene, PanoramaSphere } from './LazyLoaded3D'
+import Starfield from './Starfield'
+import * as THREE from 'three'
 
 const GLContextEvents = () => {
   const { gl } = useThree()
@@ -34,10 +34,11 @@ export const HeroCanvas = () => {
   const eyeScale = useSceneStore((s) => s.eyeScale)
   const museumSrc = useSceneStore((s) => s.museumSrc)
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 z-[1]">
       <Canvas
         dpr={[1, 1.5]}
         camera={{ position: [0, 0, 3], fov: 45 }}
+        shadows
         gl={{
           antialias: true,
           alpha: true,
@@ -46,20 +47,60 @@ export const HeroCanvas = () => {
           depth: true,
           failIfMajorPerformanceCaveat: true,
         }}
+        onCreated={(state) => {
+          state.gl.toneMapping = THREE.ACESFilmicToneMapping
+          state.gl.toneMappingExposure = 1.2
+          state.gl.shadowMap.enabled = true
+          state.gl.shadowMap.type = THREE.PCFSoftShadowMap
+        }}
       >
         <GLContextEvents />
-        <color attach="background" args={[0.04, 0.04, 0.04]} />
-        <ambientLight intensity={0.45}  color={'#ffd7a6'}/>
-        <directionalLight intensity={0.9} position={[2, 3, 4]} />
+        <color attach="background" args={[0, 0, 0]} />
+        {/* Stars rendered far behind the eye */}
+        <group position={[0, 0, 0]}>
+          <Starfield count={1200} />
+        </group>
+        {/* Ambient to unify brightness */}
+        <ambientLight intensity={0.2} color={'#ffffff'} />
+        {/* Key light: 45° above/right */}
+        <directionalLight
+          color={'#ffffff'}
+          intensity={1.4}
+          position={[2.5, 3.5, 3.0]}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-radius={3}
+          shadow-bias={-0.0005}
+        />
+        {/* Fill light: opposite side, slightly cool */}
+        <pointLight
+          color={'#a8c7ff'}
+          intensity={0.5}
+          position={[-2.5, 1.2, 1.8]}
+          distance={12}
+          decay={2}
+        />
+        {/* Rim light: warm accent from behind */}
+        <spotLight
+          color={'#ffd4a8'}
+          intensity={0.6}
+          position={[-0.4, 0.6, -2.6]}
+          angle={0.5}
+          penumbra={0.6}
+          target-position={[0, 0, 0]}
+        />
+        {/* Subtle white rim to separate from black void */}
+        <directionalLight color={'#ffffff'} intensity={0.2} position={[0.2, 0.2, -2.2]} />
 
         <CameraRig>
-          {phase !== 'focused' && (
+          {phase === 'idle' && (
             <group position={[0, -0.15, 0]}>
               <group rotation={[0, Math.PI, 0]}>
                 <EyeModel
                   src={eyes[currentEyeIndex]?.eyeSrc || '/artifacts/3d/eye.glb'}
                   scaleHint={eyeScale}
-                  onActivate={phase === 'idle' ? triggerZoom : undefined}
+                  onActivate={triggerZoom}
                 />
               </group>
             </group>

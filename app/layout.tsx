@@ -1,16 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from '../components/ui/ScrollProgress'
+import { OnboardingProvider } from '../components/onboarding/OnboardingProvider'
+import OnboardingTour from '../components/onboarding/OnboardingTour'
+import { AuthProvider } from '../components/auth/AuthProvider'
+import Navbar from '../components/ui/Navbar'
+import StarfieldBackground from '../components/3d/StarfieldBackground'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -32,10 +39,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full bg-black text-white`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased h-full`}
       >
-        <ScrollProgress />
-        {children}
+        <AuthProvider>
+          <OnboardingProvider>
+            <StarfieldBackground />
+            <Navbar />
+            <ScrollProgress />
+            {children}
+            <OnboardingTour />
+          </OnboardingProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ export const EyeNav = () => {
 
   if (total <= 1) return null
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-end justify-center p-4">
+    <div className="pointer-events-none absolute inset-0 flex items-end justify-center p-4 eye-nav">
       <div className="pointer-events-auto select-none rounded-full bg-black/40 px-3 py-1 text-xs text-white/80 backdrop-blur-md">
         {idx + 1} / {total}
       </div>

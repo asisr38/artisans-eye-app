@@ -1,25 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useSceneStore } from '../state/useSceneStore'
+import TourReplayButton from '../onboarding/TourReplayButton'
+import { useAuth } from '../auth/AuthProvider'
 
 export const TopNav = () => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const phase = useSceneStore((s) => s.phase)
-  const setMintPanelOpen = useSceneStore((s) => s.setMintPanelOpen)
-  const triggerZoom = useSceneStore((s) => s.triggerZoom)
-  const triggerReveal = useSceneStore((s) => s.triggerReveal)
-  const reset = useSceneStore((s) => s.reset)
-
-  const handleShowcase = useCallback(() => reset(), [reset])
-  const handlePanorama = useCallback(() => {
-    if (phase === 'idle') triggerZoom()
-  }, [phase, triggerZoom])
-  const handleReveal = useCallback(() => {
-    triggerReveal()
-  }, [triggerReveal])
-  const handleMint = useCallback(() => setMintPanelOpen(true), [setMintPanelOpen])
+  const { user, isAuthenticated, logout } = useAuth()
   const handleToggleMenu = useCallback(() => setMenuOpen((v) => !v), [])
   const handleCloseMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -31,58 +19,27 @@ export const TopNav = () => {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const phaseLabel = useMemo(() => {
-    if (phase === 'idle') return 'Showcase'
-    if (phase === 'zooming') return 'Zooming'
-    if (phase === 'focused') return 'Panorama'
-    if (phase === 'revealing') return 'Reveal'
-    return phase
-  }, [phase])
 
   return (
     <div className="pointer-events-none absolute inset-x-0 top-0 z-20">
       <div className="mx-auto mt-3 flex w-[min(1024px,96%)] items-center justify-between rounded-full border border-white/10 bg-black/40 p-2 text-white backdrop-blur-md">
-        <div className="pointer-events-auto select-none pl-2 text-sm font-semibold tracking-wide text-amber-300">
+        <Link
+          href="/"
+          aria-label="Go to Home"
+          className="pointer-events-auto select-none pl-2 text-sm font-semibold tracking-wide text-amber-300 hover:text-amber-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 rounded-full"
+        >
           The Artisan’s Eye
-        </div>
+        </Link>
         {/* Desktop actions */}
         <div className="pointer-events-auto hidden items-center gap-1 md:flex">
-          <button
-            type="button"
+          <Link
+            href="/showcase"
             className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
-            onClick={handleShowcase}
             aria-label="Go to Showcase"
             tabIndex={0}
           >
             Showcase
-          </button>
-          <button
-            type="button"
-            className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
-            onClick={handlePanorama}
-            aria-label="Enter Panorama"
-            tabIndex={0}
-          >
-            Panorama
-          </button>
-          <button
-            type="button"
-            className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
-            onClick={handleReveal}
-            aria-label="Reveal World"
-            tabIndex={0}
-          >
-            Reveal
-          </button>
-          <button
-            type="button"
-            className="rounded-full bg-amber-600/90 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-500"
-            onClick={handleMint}
-            aria-label="Open Mint Panel"
-            tabIndex={0}
-          >
-            Mint
-          </button>
+          </Link>
           <Link
             href="/brief"
             className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
@@ -91,9 +48,38 @@ export const TopNav = () => {
           >
             Brief
           </Link>
-          <div className="ml-2 hidden rounded-full bg-white/10 px-2 py-1 text-[10px] text-white/80 md:block">
-            {phaseLabel}
-          </div>
+          <TourReplayButton className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10" />
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={logout}
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-white/90 hover:bg-white/10"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -120,46 +106,13 @@ export const TopNav = () => {
       >
         <div className="mt-2 rounded-2xl border border-white/10 bg-black/70 p-2 text-white backdrop-blur-md">
           <div className="grid gap-1">
-            <button
-              type="button"
-              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
-              onClick={() => {
-                handleShowcase()
-                handleCloseMenu()
-              }}
+            <Link
+              href="/showcase"
+              onClick={handleCloseMenu}
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
             >
               Showcase
-            </button>
-            <button
-              type="button"
-              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
-              onClick={() => {
-                handlePanorama()
-                handleCloseMenu()
-              }}
-            >
-              Panorama
-            </button>
-            <button
-              type="button"
-              className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
-              onClick={() => {
-                handleReveal()
-                handleCloseMenu()
-              }}
-            >
-              Reveal
-            </button>
-            <button
-              type="button"
-              className="w-full rounded-lg bg-amber-600/90 px-3 py-2 text-left text-sm font-semibold text-white hover:bg-amber-500"
-              onClick={() => {
-                handleMint()
-                handleCloseMenu()
-              }}
-            >
-              Mint
-            </button>
+            </Link>
             <Link
               href="/brief"
               onClick={handleCloseMenu}
@@ -167,7 +120,46 @@ export const TopNav = () => {
             >
               Brief
             </Link>
-            <div className="mt-1 rounded-lg bg-white/10 px-3 py-1 text-[11px] text-white/80">{phaseLabel}</div>
+            <div className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10">
+              <TourReplayButton className="text-left" />
+            </div>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  onClick={handleCloseMenu}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    logout()
+                    handleCloseMenu()
+                  }}
+                  className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={handleCloseMenu}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={handleCloseMenu}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
