@@ -65,18 +65,19 @@ export const OnboardingTour: React.FC = () => {
   }
 
   const getPositionClasses = (position: string) => {
+    // Mobile defaults to bottom-centered sheet; positions apply from md and up
     switch (position) {
       case 'top-left':
-        return 'top-4 left-4'
+        return 'md:top-4 md:left-4'
       case 'top-right':
-        return 'top-4 right-4'
+        return 'md:top-4 md:right-4'
       case 'bottom-left':
-        return 'bottom-4 left-4'
+        return 'md:bottom-4 md:left-4'
       case 'bottom-right':
-        return 'bottom-4 right-4'
+        return 'md:bottom-4 md:right-4'
       case 'center':
       default:
-        return 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+        return 'md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2'
     }
   }
 
@@ -96,8 +97,8 @@ export const OnboardingTour: React.FC = () => {
         )}
         
         {/* Tour card */}
-        <div className={`absolute ${getPositionClasses(step.position)} max-w-sm mx-4`}>
-          <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg p-6 shadow-2xl">
+        <div className={`absolute left-1/2 -translate-x-1/2 bottom-6 md:bottom-auto ${getPositionClasses(step.position)} w-[92vw] max-w-sm md:max-w-md lg:max-w-lg mx-0 md:mx-4 pointer-events-auto`}>
+          <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-xl p-4 md:p-6 shadow-2xl max-h-[70vh] overflow-y-auto pb-[max(env(safe-area-inset-bottom),1rem)]">
             {/* Progress indicator */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex space-x-2">
@@ -120,15 +121,15 @@ export const OnboardingTour: React.FC = () => {
             </div>
 
             {/* Content */}
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-lg md:text-xl font-semibold text-white mb-2 md:mb-3">
               {step.title}
             </h3>
-            <p className="text-gray-300 mb-6 leading-relaxed">
+            <p className="text-gray-300 text-sm md:text-base mb-4 md:mb-6 leading-relaxed">
               {step.description}
             </p>
 
             {/* Navigation buttons */}
-            <div className="flex justify-between">
+            <div className="flex flex-col md:flex-row md:justify-between gap-2">
               <button
                 onClick={prevStep}
                 disabled={isFirstStep}
