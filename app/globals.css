@@ -141,27 +141,34 @@ main {
 
 .artifact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  height: 100%;
-  overflow: hidden;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
-.artifact-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+@media (min-width: 480px) {
+  .artifact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.artifact-card img {
-  flex: 1 1 auto;
-  object-fit: cover;
+@media (min-width: 768px) {
+  .artifact-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
 }
 
-.artifact-card .card-body {
-  padding: 0.75rem;
-  flex: 0 0 auto;
+@media (min-width: 1024px) {
+  .artifact-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
+
+.artifact-card { display: flex; flex-direction: column; height: 100%; }
+
+.artifact-card img { flex: 1 1 auto; object-fit: cover; }
+
+.artifact-card .card-body { padding: 0.75rem; flex: 0 0 auto; }
 
 /* No scroll utility for showcase page */
 .no-scroll {

@@ -116,7 +116,7 @@ export default function ShowcasePage() {
   }
 
   return (
-    <main className="flex flex-col h-screen overflow-hidden pt-16">
+    <main className="flex flex-col min-h-svh overflow-y-auto pt-16">
       <TopNav />
       <div className="w-full px-4 py-3 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
@@ -242,7 +242,7 @@ export default function ShowcasePage() {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
@@ -260,7 +260,7 @@ export default function ShowcasePage() {
             </div>
           </div>
         ) : (
-          <div className={`w-full h-full ${artifacts.length <= 4 ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+          <div className="w-full h-full overflow-y-auto">
             <div className="artifact-grid p-4">
               {artifacts.map(artifact => (
                 <div key={artifact.id} className="artifact-card bg-secondary rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
