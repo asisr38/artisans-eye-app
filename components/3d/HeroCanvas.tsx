@@ -4,8 +4,7 @@ import { Canvas, useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
 import CameraRig from './CameraRig'
 import { useSceneStore } from '../state/useSceneStore'
-import { OrbitControls } from '@react-three/drei'
-import { EyeModel, MuseumScene, PanoramaSphere } from './LazyLoaded3D'
+import EyeModel from './EyeModel'
 import Starfield from './Starfield'
 import * as THREE from 'three'
 
@@ -14,25 +13,16 @@ const GLContextEvents = () => {
   useEffect(() => {
     const canvas = gl.domElement
     const handleLost = (e: Event) => e.preventDefault()
-    const handleRestored = () => {}
     canvas.addEventListener('webglcontextlost', handleLost, false)
-    canvas.addEventListener('webglcontextrestored', handleRestored, false)
     return () => {
       canvas.removeEventListener('webglcontextlost', handleLost, false)
-      canvas.removeEventListener('webglcontextrestored', handleRestored, false)
     }
   }, [gl])
   return null
 }
 
 export const HeroCanvas = () => {
-  const phase = useSceneStore((s) => s.phase)
-  const triggerZoom = useSceneStore((s) => s.triggerZoom)
-  const artifactSrc = useSceneStore((s) => s.artifactSrc)
-  const eyes = useSceneStore((s) => s.eyes)
-  const currentEyeIndex = useSceneStore((s) => s.currentEyeIndex)
   const eyeScale = useSceneStore((s) => s.eyeScale)
-  const museumSrc = useSceneStore((s) => s.museumSrc)
   return (
     <div className="absolute inset-0 z-[1]">
       <Canvas
@@ -56,13 +46,10 @@ export const HeroCanvas = () => {
       >
         <GLContextEvents />
         <color attach="background" args={[0, 0, 0]} />
-        {/* Stars rendered far behind the eye */}
         <group position={[0, 0, 0]}>
           <Starfield count={1200} />
         </group>
-        {/* Ambient to unify brightness */}
         <ambientLight intensity={0.2} color={'#ffffff'} />
-        {/* Key light: 45° above/right */}
         <directionalLight
           color={'#ffffff'}
           intensity={1.4}
@@ -73,7 +60,6 @@ export const HeroCanvas = () => {
           shadow-radius={3}
           shadow-bias={-0.0005}
         />
-        {/* Fill light: opposite side, slightly cool */}
         <pointLight
           color={'#a8c7ff'}
           intensity={0.5}
@@ -81,7 +67,6 @@ export const HeroCanvas = () => {
           distance={12}
           decay={2}
         />
-        {/* Rim light: warm accent from behind */}
         <spotLight
           color={'#ffd4a8'}
           intensity={0.6}
@@ -90,47 +75,18 @@ export const HeroCanvas = () => {
           penumbra={0.6}
           target-position={[0, 0, 0]}
         />
-        {/* Subtle white rim to separate from black void */}
         <directionalLight color={'#ffffff'} intensity={0.2} position={[0.2, 0.2, -2.2]} />
 
         <CameraRig>
-          {phase === 'idle' && (
-            <group position={[0, -0.15, 0]}>
-              <group rotation={[0, Math.PI, 0]}>
-                <EyeModel
-                  src={eyes[currentEyeIndex]?.eyeSrc || '/artifacts/3d/eye.glb'}
-                  scaleHint={eyeScale}
-                  onActivate={triggerZoom}
-                />
-              </group>
+          <group position={[0, -0.15, 0]}>
+            <group rotation={[0, Math.PI, 0]}>
+              <EyeModel scaleHint={eyeScale} />
             </group>
-          )}
-          {phase === 'focused' && (
-            <group>
-              <PanoramaSphere src={artifactSrc} />
-            </group>
-          )}
-          {phase === 'revealing' && (
-            <group>
-              <MuseumScene src={museumSrc} />
-            </group>
-          )}
+          </group>
         </CameraRig>
-
-        <OrbitControls
-          enabled={phase === 'focused' || phase === 'revealing'}
-          enableDamping
-          dampingFactor={0.08}
-          enablePan={false}
-          enableZoom={phase !== 'focused'}
-          minDistance={phase === 'revealing' ? 2 : 0.6}
-          maxDistance={phase === 'revealing' ? 10 : 4}
-        />
       </Canvas>
     </div>
   )
 }
 
 export default HeroCanvas
-
-
