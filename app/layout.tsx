@@ -1,12 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import ScrollProgress from '../components/ui/ScrollProgress'
-import { OnboardingProvider } from '../components/onboarding/OnboardingProvider'
-import OnboardingTour from '../components/onboarding/OnboardingTour'
-import { AuthProvider } from '../components/auth/AuthProvider'
-import Navbar from '../components/ui/Navbar'
-import StarfieldBackground from '../components/3d/StarfieldBackground'
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,8 +16,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Artisan’s Eye",
-  description: "Mandala-inspired artifact minting experience",
+  title: "The Artisan's Eye",
+  description: "Nepali handcraft, presented with care.",
 };
 
 export const viewport: Viewport = {
@@ -37,19 +32,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased h-full`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <OnboardingProvider>
-            <StarfieldBackground />
-            <Navbar />
-            <ScrollProgress />
-            {children}
-            <OnboardingTour />
-          </OnboardingProvider>
-        </AuthProvider>
+        {children}
+        <Analytics />
       </body>
     </html>
   );
