@@ -19,6 +19,21 @@ Visit `http://localhost:3000`.
 - Start: `next start`
 - Requires Node `^20.10.0` or `^22.0.0`.
 
+### Environment variables
+
+```
+RESEND_API_KEY=...   # required in production; inquiry form posts will 503 without it
+```
+
+In development, omitting `RESEND_API_KEY` is fine — the `/api/inquire` route logs
+the submission and returns a fake success so the UI flow can be exercised. In
+production, missing the key returns `503 email_not_configured` so the problem
+surfaces immediately.
+
+The sender address is `onboarding@resend.dev` (Resend&rsquo;s default for
+unverified accounts). Once a domain is verified in Resend, swap the `FROM_ADDRESS`
+constant in `lib/email.ts` to `inquiries@<yourdomain>`.
+
 ## Stack
 
 - Next.js 15 (App Router, Turbopack)

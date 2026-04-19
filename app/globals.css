@@ -131,14 +131,6 @@ body {
   color: var(--color-accent-primary);
 }
 
-/* Showcase page layout styles */
-main {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: hidden;
-}
-
 .artifact-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
