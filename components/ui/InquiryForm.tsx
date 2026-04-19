@@ -57,18 +57,18 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
   }
 
   const inputClass =
-    'w-full border border-white/20 bg-transparent px-4 py-3 text-white placeholder:text-white/30 focus:border-white/60 focus:outline-none transition-colors'
+    'w-full rounded-sm border border-white/15 bg-white/[0.02] px-4 py-3.5 text-[15px] text-white placeholder:text-white/25 transition-all duration-300 focus:border-white/50 focus:bg-white/[0.04] focus:outline-none focus:ring-4 focus:ring-white/5'
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
       <div>
-        <label htmlFor="name" className="mb-2 block text-sm text-white/60">
+        <label htmlFor="name" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
           Your name
         </label>
         <input id="name" name="name" required maxLength={120} className={inputClass} />
       </div>
       <div>
-        <label htmlFor="email" className="mb-2 block text-sm text-white/60">
+        <label htmlFor="email" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
           Email
         </label>
         <input
@@ -81,8 +81,8 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
         />
       </div>
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm text-white/60">
-          Message <span className="text-white/35">— tell us what draws you to this piece</span>
+        <label htmlFor="message" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
+          Message <span className="text-white/30">— tell us what draws you to this piece</span>
         </label>
         <textarea
           id="message"
@@ -101,16 +101,26 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
         <button
           type="submit"
           disabled={state === 'submitting'}
-          className="bg-white px-8 py-3 font-medium tracking-wide text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="group relative overflow-hidden rounded-sm bg-white px-8 py-3.5 text-[15px] font-medium tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_0_4px_rgba(255,255,255,0.08)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {state === 'submitting' ? 'Sending…' : 'Send inquiry'}
+          <span className="relative z-10 inline-flex items-center gap-2">
+            {state === 'submitting' ? 'Sending…' : 'Send inquiry'}
+            {state !== 'submitting' && (
+              <span
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                →
+              </span>
+            )}
+          </span>
         </button>
         {whatsAppHref && (
           <a
             href={whatsAppHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-white/30 px-8 py-3 text-center font-medium tracking-wide text-white transition-colors hover:border-white/60"
+            className="group rounded-sm border border-white/20 px-8 py-3.5 text-center text-[15px] font-medium tracking-wide text-white transition-all duration-300 hover:border-white/50 hover:bg-white/[0.04]"
           >
             Or message on WhatsApp
           </a>
