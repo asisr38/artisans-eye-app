@@ -13,8 +13,8 @@ type Props = {
   quote: ReactNode
 }
 
-// Apple-style: photo pins while bio scrolls past it. Desktop only — on mobile
-// the column collapses and the pin is disabled (sticky just sits).
+// Photo pins while bio scrolls past on desktop. Mobile collapses to a single
+// column with no pin.
 export default function StickyArtisan({
   photoSlot,
   eyebrow,
@@ -31,18 +31,17 @@ export default function StickyArtisan({
     offset: ['start end', 'end start'],
   })
 
-  // photo drifts up slightly as bio scrolls past
-  const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '-8%'])
+  const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
 
   return (
-    <section className="border-t border-white/5 bg-[#0A0A0D]">
+    <section className="border-t border-[var(--hairline)] bg-[var(--color-ink-2)]">
       <div
         ref={ref}
-        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-24 md:grid-cols-[minmax(0,1fr)_1.4fr] md:py-32"
+        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-24 sm:px-6 md:grid-cols-[minmax(0,1fr)_1.4fr] md:gap-16 md:py-40"
       >
         <div className="md:sticky md:top-24 md:self-start">
           <motion.div
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-white/[0.03] ring-1 ring-white/5"
+            className="relative aspect-[3/4] w-full overflow-hidden bg-[var(--color-ink-3)] ring-1 ring-[var(--hairline)]"
             style={reduceMotion ? undefined : { y: photoY }}
           >
             {photoSlot}
@@ -51,29 +50,29 @@ export default function StickyArtisan({
 
         <div>
           <Reveal>
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-white/50">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.42em] text-[var(--color-cream-3)] sm:text-[11px]">
               {eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.05}>
-            <h2 className="mb-8 text-4xl font-semibold tracking-[-0.02em] text-white md:text-5xl">
+            <h2 className="font-display mb-10 text-[clamp(2.25rem,5.4vw,4rem)] leading-[1.05] text-[var(--color-cream)]">
               {name}
             </h2>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <dl className="mb-10 grid grid-cols-2 gap-y-4 border-y border-white/10 py-6 text-sm">
+            <dl className="mb-12 grid grid-cols-1 gap-y-5 border-y border-[var(--hairline)] py-7 text-sm sm:grid-cols-2 sm:gap-y-4">
               {meta}
             </dl>
           </Reveal>
 
-          <div className="space-y-5 text-[17px] leading-relaxed text-white/75">
+          <div className="space-y-6 text-[17px] leading-[1.75] text-[var(--color-cream-2)] sm:text-[18px]">
             {bio}
           </div>
 
           <Reveal delay={0.1}>
-            <blockquote className="mt-10 border-l-2 border-amber-400/60 pl-6 text-xl italic leading-relaxed text-white/90">
+            <blockquote className="font-display mt-12 border-l border-[var(--color-bronze)] pl-6 text-[clamp(1.4rem,2.4vw,1.875rem)] italic leading-[1.4] text-[var(--color-cream)]">
               {quote}
             </blockquote>
           </Reveal>

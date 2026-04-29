@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -15,9 +15,17 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["opsz", "SOFT"],
+});
+
 export const metadata: Metadata = {
-  title: "The Artisan's Eye",
-  description: "Nepali handcraft, presented with care.",
+  title: "Eleven-Headed Avalokiteshvara Thangka | The Artisan's Eye",
+  description:
+    "A black-and-gold Thousand-Armed Avalokiteshvara thangka from the Himalayan painting tradition.",
 };
 
 export const viewport: Viewport = {
@@ -34,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable} antialiased`}
       >
         {children}
         <Analytics />

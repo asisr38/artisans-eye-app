@@ -1,0 +1,20 @@
+[     684ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[     925ms] [LOG] %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit @ https://va.vercel-scripts.com/v1/script.debug.js:0
+[     926ms] [LOG] %c[Vercel Web Analytics]%c [view] http://localhost:3003/ color: rgb(120, 120, 120) color: inherit {o: http://localhost:3003/, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2.0.1, ts: 1777428184585} /_vercel/insights/view @ https://va.vercel-scripts.com/v1/script.debug.js:0
+[    1759ms] [WARNING] Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly. @ http://localhost:3003/_next/static/chunks/node_modules_127c631a._.js:124
+[   53359ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:14537
+[   53453ms] [WARNING] Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly. @ http://localhost:3003/_next/static/chunks/node_modules_127c631a._.js:124
+[   53466ms] [LOG] %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit @ https://va.vercel-scripts.com/v1/script.debug.js:0
+[   53466ms] [LOG] %c[Vercel Web Analytics]%c [view] http://localhost:3003/ color: rgb(120, 120, 120) color: inherit {o: http://localhost:3003/, sv: 0.1.3, sdkn: @vercel/analytics/react, sdkv: 2.0.1, ts: 1777428237126} /_vercel/insights/view @ https://va.vercel-scripts.com/v1/script.debug.js:0
+[  186130ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  187194ms] [LOG] [Fast Refresh] done in 1131ms @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  188258ms] [LOG] THREE.WebGLRenderer: Context Lost. @ http://localhost:3003/_next/static/chunks/node_modules_three_build_three_module_3c5aa273.js:9920
+[  199696ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  199720ms] [LOG] [Fast Refresh] done in 75ms @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  292544ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  292551ms] [LOG] [Fast Refresh] done in 109ms @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  292652ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  293641ms] [LOG] [Fast Refresh] done in 1090ms @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5809
+[  293788ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3003/_next/static/chunks/node_modules_next_dist_client_cf1d9188._.js:5949
+[  293932ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3003/:0
+[  293976ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3003/favicon.ico:0
