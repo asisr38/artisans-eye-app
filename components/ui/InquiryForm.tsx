@@ -47,9 +47,11 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
 
   if (state === 'success') {
     return (
-      <div className="mx-auto max-w-xl py-16 text-center">
-        <p className="mb-4 text-2xl font-light tracking-wide text-white">Thank you.</p>
-        <p className="text-white/60">
+      <div className="mx-auto max-w-xl py-20 text-center">
+        <p className="font-display mb-5 text-[clamp(1.75rem,3.6vw,2.5rem)] text-[var(--color-cream)]">
+          Thank you.
+        </p>
+        <p className="text-[var(--color-cream-2)]">
           Your inquiry has been received. You&rsquo;ll hear back within one business day.
         </p>
       </div>
@@ -57,18 +59,28 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
   }
 
   const inputClass =
-    'w-full rounded-sm border border-white/15 bg-white/[0.02] px-4 py-3.5 text-[15px] text-white placeholder:text-white/25 transition-all duration-300 focus:border-white/50 focus:bg-white/[0.04] focus:outline-none focus:ring-4 focus:ring-white/5'
+    'w-full border-0 border-b border-[var(--hairline-strong)] bg-transparent px-0 py-3 text-[16px] text-[var(--color-cream)] placeholder:text-[var(--color-cream-3)]/50 transition-colors duration-500 focus:border-[var(--color-bronze)] focus:outline-none'
+
+  const labelClass =
+    'mb-3 block text-[10px] uppercase tracking-[0.32em] text-[var(--color-cream-3)]'
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-9">
       <div>
-        <label htmlFor="name" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
+        <label htmlFor="name" className={labelClass}>
           Your name
         </label>
-        <input id="name" name="name" required maxLength={120} className={inputClass} />
+        <input
+          id="name"
+          name="name"
+          required
+          maxLength={120}
+          autoComplete="name"
+          className={inputClass}
+        />
       </div>
       <div>
-        <label htmlFor="email" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
+        <label htmlFor="email" className={labelClass}>
           Email
         </label>
         <input
@@ -77,12 +89,17 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
           type="email"
           required
           maxLength={200}
+          autoComplete="email"
+          inputMode="email"
           className={inputClass}
         />
       </div>
       <div>
-        <label htmlFor="message" className="mb-2 block text-[13px] font-medium tracking-wide text-white/55">
-          Message <span className="text-white/30">— tell us what draws you to this piece</span>
+        <label htmlFor="message" className={labelClass}>
+          Message
+          <span className="ml-2 normal-case tracking-normal text-[var(--color-cream-3)]/70">
+            — tell us what draws you to this piece
+          </span>
         </label>
         <textarea
           id="message"
@@ -95,34 +112,26 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
         />
       </div>
 
-      {errorMsg && <p className="text-sm text-red-400">{errorMsg}</p>}
+      {errorMsg && (
+        <p className="text-sm text-[var(--color-bronze-soft)]">{errorMsg}</p>
+      )}
 
-      <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+      <div className="flex flex-col gap-3 pt-4 sm:flex-row">
         <button
           type="submit"
           disabled={state === 'submitting'}
-          className="group relative overflow-hidden rounded-sm bg-white px-8 py-3.5 text-[15px] font-medium tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_0_4px_rgba(255,255,255,0.08)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="min-h-[52px] border border-[var(--color-cream)] bg-[var(--color-cream)] px-10 py-4 text-[12px] uppercase tracking-[0.32em] text-[var(--color-ink)] transition-all duration-500 hover:bg-transparent hover:text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <span className="relative z-10 inline-flex items-center gap-2">
-            {state === 'submitting' ? 'Sending…' : 'Send inquiry'}
-            {state !== 'submitting' && (
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                →
-              </span>
-            )}
-          </span>
+          {state === 'submitting' ? 'Sending' : 'Send inquiry'}
         </button>
         {whatsAppHref && (
           <a
             href={whatsAppHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="group rounded-sm border border-white/20 px-8 py-3.5 text-center text-[15px] font-medium tracking-wide text-white transition-all duration-300 hover:border-white/50 hover:bg-white/[0.04]"
+            className="flex min-h-[52px] items-center justify-center border border-[var(--hairline-strong)] px-10 py-4 text-center text-[12px] uppercase tracking-[0.32em] text-[var(--color-cream-2)] transition-colors duration-500 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
           >
-            Or message on WhatsApp
+            Message on WhatsApp
           </a>
         )}
       </div>

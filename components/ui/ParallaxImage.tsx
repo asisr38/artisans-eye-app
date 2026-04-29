@@ -10,18 +10,19 @@ type Props = {
   priority?: boolean
   sizes?: string
   badge?: string
+  aspect?: string
   className?: string
 }
 
-// Slow upward parallax + slight zoom-out as it scrolls past. Matches the
-// Apple product-page feel where the hero image feels anchored to the page
-// rather than riding with the viewport.
+// Slow scroll-linked drift. Gallery-mounted feel — the artifact hangs in
+// place; the viewport moves around it.
 export default function ParallaxImage({
   src,
   alt,
   priority,
   sizes,
   badge,
+  aspect = 'aspect-[3/4]',
   className = '',
 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
@@ -32,13 +33,13 @@ export default function ParallaxImage({
     offset: ['start end', 'end start'],
   })
 
-  const y = useTransform(scrollYProgress, [0, 1], ['-6%', '6%'])
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.02, 1.08])
+  const y = useTransform(scrollYProgress, [0, 1], ['-4%', '4%'])
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.0, 1.05])
 
   return (
     <div
       ref={ref}
-      className={`relative aspect-[4/5] w-full max-w-2xl overflow-hidden rounded-sm bg-black ring-1 ring-white/5 ${className}`}
+      className={`relative ${aspect} w-full max-w-2xl overflow-hidden bg-[var(--color-ink-2)] ring-1 ring-[var(--hairline)] ${className}`}
     >
       <motion.div
         className="absolute inset-0"
@@ -54,14 +55,14 @@ export default function ParallaxImage({
         />
       </motion.div>
 
-      {/* gentle vignette to sell the premium edit */}
+      {/* Gallery vignette — subtler than the previous radial. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.55)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_70%,rgba(0,0,0,0.35)_100%)]"
       />
 
       {badge && (
-        <span className="absolute left-3 top-3 rounded bg-amber-400/90 px-2 py-1 font-mono text-[10px] font-semibold tracking-wide text-black">
+        <span className="absolute left-4 top-4 border border-[var(--hairline-strong)] bg-[var(--color-ink)]/70 px-2.5 py-1 text-[10px] uppercase tracking-[0.25em] text-[var(--color-cream-2)] backdrop-blur-sm">
           {badge}
         </span>
       )}

@@ -1,25 +1,39 @@
 import HeroRoot from '@/components/hero/HeroRoot'
 import InquiryForm from '@/components/ui/InquiryForm'
-import Placeholder from '@/components/ui/Placeholder'
 import Reveal from '@/components/ui/Reveal'
-import ParallaxImage from '@/components/ui/ParallaxImage'
-import StickyArtisan from '@/components/ui/StickyArtisan'
+import ThangkaExperience from '@/components/ui/ThangkaExperience'
 
 const WHATSAPP_HREF = 'https://wa.me/15715030608'
 const CONTACT_EMAIL = 'ashishforllc@gmail.com'
 
-// Working title used in the inquiry email subject. Swap to the real piece
-// name when the thangka arrives.
-const ARTIFACT_REF = 'Thangka — placeholder listing'
+const ARTIFACT_REF = 'Eleven-Headed Thousand-Armed Avalokiteshvara Thangka'
+
+const iconographyNotes = [
+  {
+    title: 'Eleven faces',
+    body: 'Stacked heads signal the ability to perceive suffering in every direction. In traditional readings, the uppermost head is associated with Amitabha Buddha.',
+  },
+  {
+    title: 'Radiating arms',
+    body: 'The surrounding field of hands turns compassion into action: seeing, reaching, blessing, protecting, and responding without limit.',
+  },
+  {
+    title: 'Hands at the heart',
+    body: 'The central joined hands hold the vow at the center of the image. The figure is not only majestic; it is devotional and inwardly still.',
+  },
+  {
+    title: 'Black and gold ground',
+    body: 'The dark field gives the painting gravity and depth, while gold linework makes the figure appear to emerge from the surface.',
+  },
+]
 
 export default function Home() {
   return (
     <>
       <HeroRoot />
 
-      <main className="bg-[#0D0D10] text-white">
+      <main className="bg-[var(--color-ink)] text-[var(--color-cream)]">
         <ArtifactSection />
-        <ArtisanSection />
         <ContextSection />
         <MaterialsSection />
         <InquireSection />
@@ -29,189 +43,142 @@ export default function Home() {
   )
 }
 
+// ───────────────────────── Section primitives ─────────────────────────
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-[10px] uppercase tracking-[0.42em] text-[var(--color-cream-3)] sm:text-[11px]">
+      {children}
+    </p>
+  )
+}
+
+function Display({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <h2
+      className={`font-display text-[clamp(2.25rem,5.4vw,4rem)] leading-[1.05] text-[var(--color-cream)] ${className}`}
+    >
+      {children}
+    </h2>
+  )
+}
+
 // ───────────────────────── Sections ─────────────────────────
-//
-// All copy with a <Placeholder> marker must be replaced before this page
-// is shared publicly. Grep for "Placeholder" to find every slot.
 
 function ArtifactSection() {
   return (
     <section
       id="artifact"
-      className="relative mx-auto flex max-w-5xl flex-col items-center gap-14 px-6 py-32 md:py-40"
+      className="relative mx-auto flex max-w-5xl flex-col items-center gap-16 px-5 py-28 sm:gap-20 sm:px-6 md:py-40"
     >
       <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-white/40">
-          Thangka · Kathmandu Valley
-        </p>
+        <Eyebrow>Thangka · Kathmandu Valley</Eyebrow>
       </Reveal>
 
       <Reveal delay={0.08} className="flex w-full justify-center">
-        <ParallaxImage
-          src="/artifacts/IMG_0447.JPG"
-          alt="Thangka — working photograph (to be replaced with studio scan)"
+        <ThangkaExperience
+          artworkSrc="/artifacts/thangka-centerpiece.jpg"
+          textureSrc="/artifacts/thangka-centerpiece-close.jpg"
+          panoramaSrc="/artifacts/thangka-360-room.png"
+          alt="Thousand-Armed Avalokiteshvara thangka with red brocade border"
           priority
-          sizes="(max-width: 768px) 100vw, 640px"
-          badge="DRAFT PHOTO"
         />
       </Reveal>
 
-      <div className="max-w-2xl text-center">
+      <div className="max-w-2xl px-2 text-center">
         <Reveal delay={0.05}>
-          <h1 className="mb-5 text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-white md:text-6xl">
-            <Placeholder>PIECE TITLE — e.g. Medicine Buddha Mandala</Placeholder>
+          <h1 className="font-display mb-6 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] text-[var(--color-cream)]">
+            Thousand-Armed Avalokiteshvara Thangka
           </h1>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="mb-8 text-white/55">
-            By <Placeholder>ARTISAN NAME</Placeholder>,{' '}
-            <Placeholder>REGION — e.g. Patan, Lalitpur</Placeholder>
+          <p className="mb-10 text-[15px] text-[var(--color-cream-3)]">
+            Kathmandu Valley atelier · artist documentation pending
           </p>
         </Reveal>
 
         <Reveal delay={0.2}>
-          <p className="mx-auto max-w-xl text-[19px] leading-relaxed text-white/80">
-            <Placeholder>
-              ONE-SENTENCE LEDE — what makes THIS piece worth flying across the world
-              for. Keep it specific. Avoid &ldquo;sacred,&rdquo; &ldquo;ancient,&rdquo;
-              &ldquo;mystical.&rdquo;
-            </Placeholder>
+          <p className="mx-auto max-w-xl text-[17px] leading-[1.7] text-[var(--color-cream-2)] sm:text-[18px]">
+            A black-and-gold meditation painting centered on Avalokiteshvara,
+            the bodhisattva of compassion, with eleven faces and a halo-like
+            field of hands rendered in luminous gold linework.
           </p>
         </Reveal>
       </div>
 
       <Reveal delay={0.1} className="w-full">
-        <div className="mx-auto mt-4 flex w-full max-w-2xl items-center justify-between border-y border-white/10 py-6 font-mono text-xs uppercase tracking-wider text-white/60">
-          <span>
-            Inquire for price — <Placeholder>APPROX USD RANGE</Placeholder>
-          </span>
+        <div className="mx-auto flex w-full max-w-2xl flex-col gap-3 border-y border-[var(--hairline)] py-7 text-[12px] uppercase tracking-[0.28em] text-[var(--color-cream-3)] sm:flex-row sm:items-center sm:justify-between">
+          <span>One available · inquire for price</span>
           <a
             href="#inquire"
-            className="group inline-flex items-center gap-2 text-white transition-colors hover:text-amber-400"
+            className="link-editorial self-start text-[var(--color-cream)] sm:self-auto"
           >
             Inquire
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              →
-            </span>
           </a>
-        </div>
-      </Reveal>
-
-      <Reveal delay={0.15} className="w-full">
-        <div className="mx-auto mt-8 w-full max-w-2xl rounded-sm border border-dashed border-white/15 bg-white/[0.02] p-10 text-center">
-          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.3em] text-white/35">
-            3D viewer
-          </p>
-          <p className="text-sm text-white/55">
-            Deep-zoom iconography tour lands in PR 4. Until then, the working photo above
-            stands in for the final presentation.
-          </p>
         </div>
       </Reveal>
     </section>
   )
 }
 
-function ArtisanSection() {
-  return (
-    <StickyArtisan
-      eyebrow="The Artisan"
-      photoSlot={
-        <div className="flex h-full items-center justify-center font-mono text-xs uppercase tracking-[0.25em] text-white/35">
-          <Placeholder>ARTISAN PHOTO</Placeholder>
-        </div>
-      }
-      name={<Placeholder>ARTISAN NAME</Placeholder>}
-      meta={
-        <>
-          <dt className="font-mono uppercase tracking-wider text-white/50">Region</dt>
-          <dd>
-            <Placeholder>e.g. Patan, Lalitpur</Placeholder>
-          </dd>
-          <dt className="font-mono uppercase tracking-wider text-white/50">Practicing</dt>
-          <dd>
-            <Placeholder>YEARS — e.g. 22 years</Placeholder>
-          </dd>
-          <dt className="font-mono uppercase tracking-wider text-white/50">Lineage</dt>
-          <dd>
-            <Placeholder>SCHOOL / TEACHER — one line</Placeholder>
-          </dd>
-        </>
-      }
-      bio={
-        <>
-          <Reveal delay={0.05}>
-            <p>
-              <Placeholder>
-                PARAGRAPH 1 — how the artisan came to this craft. Specific. One event,
-                one teacher, one year.
-              </Placeholder>
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p>
-              <Placeholder>
-                PARAGRAPH 2 — how they work now. Materials, routine, the part of the
-                process they care most about.
-              </Placeholder>
-            </p>
-          </Reveal>
-        </>
-      }
-      quote={
-        <>
-          &ldquo;<Placeholder>DIRECT QUOTE — 1-2 sentences, in their voice</Placeholder>&rdquo;
-        </>
-      }
-    />
-  )
-}
-
 function ContextSection() {
   return (
-    <section className="border-t border-white/5">
-      <div className="mx-auto max-w-3xl px-6 py-32 md:py-40">
+    <section className="border-t border-[var(--hairline)]">
+      <div className="mx-auto max-w-3xl px-5 py-28 sm:px-6 md:py-40">
         <Reveal>
-          <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
-            Cultural Context
-          </p>
+          <Eyebrow>Cultural Context</Eyebrow>
         </Reveal>
         <Reveal delay={0.05}>
-          <h2 className="mb-12 text-4xl font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-5xl">
-            What this thangka depicts
-          </h2>
+          <Display className="mb-12 mt-3">What this thangka depicts</Display>
         </Reveal>
 
-        <div className="space-y-6 text-[19px] leading-relaxed text-white/80">
+        <div className="space-y-7 text-[17px] leading-[1.75] text-[var(--color-cream-2)] sm:text-[18px]">
           <Reveal delay={0.1}>
             <p>
-              <Placeholder>
-                ICONOGRAPHY — the central figure, the symbols around them, what each means.
-                Write this as if explaining to a curious buyer, not an academic.
-              </Placeholder>
+              The central figure is identified by visible iconography as
+              Eleven-Headed, Thousand-Armed Avalokiteshvara, known in Tibetan
+              as Chenrezig. Avalokiteshvara is the bodhisattva of compassion:
+              the awakened quality that sees suffering clearly and responds.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
             <p>
-              <Placeholder>
-                TRADITION — where this style comes from, how long it&rsquo;s been practiced
-                in the region, what&rsquo;s distinctive about this artisan&rsquo;s take on it.
-              </Placeholder>
+              The eleven faces rise above the crown, looking outward in every
+              direction. Around the body, the many arms open into a circular
+              field. In many depictions of this form, eyes appear in the palms:
+              a visual promise that compassion must both see and act.
             </p>
           </Reveal>
           <Reveal delay={0.2}>
             <p>
-              <Placeholder>
-                USE — how a thangka like this would be lived with. Hung in a shrine room,
-                displayed in a gallery wall, used in practice. Give the buyer a picture of
-                it in their life.
-              </Placeholder>
+              This example is especially dramatic because it uses a black ground
+              with gold drawing. The dark field quiets the image; the gold brings
+              the figure forward slowly, detail by detail, as the viewer moves
+              closer.
             </p>
           </Reveal>
+        </div>
+
+        <div className="mt-16 grid gap-4 sm:grid-cols-2">
+          {iconographyNotes.map((note, index) => (
+            <Reveal key={note.title} delay={0.08 + index * 0.04}>
+              <article className="border border-[var(--hairline)] p-6">
+                <h3 className="mb-3 font-display text-[24px] leading-tight text-[var(--color-cream)]">
+                  {note.title}
+                </h3>
+                <p className="text-[15px] leading-[1.65] text-[var(--color-cream-2)]">
+                  {note.body}
+                </p>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -220,37 +187,30 @@ function ContextSection() {
 
 function MaterialsSection() {
   return (
-    <section className="border-t border-white/5 bg-[#0A0A0D]">
-      <div className="mx-auto max-w-3xl px-6 py-32 md:py-40">
+    <section className="border-t border-[var(--hairline)] bg-[var(--color-ink-2)]">
+      <div className="mx-auto max-w-3xl px-5 py-28 sm:px-6 md:py-40">
         <Reveal>
-          <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
-            The Piece
-          </p>
+          <Eyebrow>The Piece</Eyebrow>
         </Reveal>
         <Reveal delay={0.05}>
-          <h2 className="mb-14 text-4xl font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-5xl">
-            Materials &amp; dimensions
-          </h2>
+          <Display className="mb-14 mt-3">Materials &amp; dimensions</Display>
         </Reveal>
 
-        <dl className="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
+        <dl className="grid grid-cols-1 gap-x-12 gap-y-1 md:grid-cols-2">
           <Row label="Materials" delay={0.05}>
-            <Placeholder>
-              e.g. natural mineral pigments, 24k gold leaf, cotton canvas, silk brocade
-              border
-            </Placeholder>
+            Pigment and gold detailing on cloth, mounted with silk brocade
           </Row>
           <Row label="Dimensions (unframed)" delay={0.1}>
-            <Placeholder>W × H — e.g. 45 × 60 cm</Placeholder>
+            Painted image measurements pending verification
           </Row>
           <Row label="Dimensions (with brocade)" delay={0.15}>
-            <Placeholder>W × H</Placeholder>
+            Full textile measurements pending verification
           </Row>
           <Row label="Time to make" delay={0.2}>
-            <Placeholder>e.g. approximately 4 months</Placeholder>
+            Artist documentation pending
           </Row>
           <Row label="Condition" delay={0.25}>
-            <Placeholder>new / as-painted</Placeholder>
+            Photographed with brocade mount; final condition notes available on inquiry
           </Row>
           <Row label="Ships from" delay={0.3}>
             United States · worldwide on request
@@ -272,11 +232,11 @@ function Row({
 }) {
   return (
     <Reveal delay={delay}>
-      <div className="border-b border-white/10 py-5">
-        <dt className="mb-1 font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
+      <div className="border-b border-[var(--hairline)] py-6">
+        <dt className="mb-2 text-[10px] uppercase tracking-[0.3em] text-[var(--color-cream-3)]">
           {label}
         </dt>
-        <dd className="text-white/85">{children}</dd>
+        <dd className="text-[15px] text-[var(--color-cream)]">{children}</dd>
       </div>
     </Reveal>
   )
@@ -284,22 +244,18 @@ function Row({
 
 function InquireSection() {
   return (
-    <section id="inquire" className="border-t border-white/5">
-      <div className="mx-auto max-w-3xl px-6 py-32 md:py-40">
-        <div className="mb-14 text-center">
+    <section id="inquire" className="border-t border-[var(--hairline)]">
+      <div className="mx-auto max-w-3xl px-5 py-28 sm:px-6 md:py-40">
+        <div className="mb-16 text-center">
           <Reveal>
-            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.35em] text-white/45">
-              Acquire
-            </p>
+            <Eyebrow>Acquire</Eyebrow>
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mb-5 text-4xl font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-5xl">
-              Inquire to purchase
-            </h2>
+            <Display className="mb-6 mt-3">Inquire to purchase</Display>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto max-w-xl text-[17px] text-white/60">
-              One piece, one buyer. Tell us a little about what draws you to this thangka —
+            <p className="mx-auto max-w-xl text-[16px] leading-[1.7] text-[var(--color-cream-2)] sm:text-[17px]">
+              One piece, one buyer. Tell us a little about what draws you to this thangka -
               we&rsquo;ll respond personally within one business day.
             </p>
           </Reveal>
@@ -309,11 +265,11 @@ function InquireSection() {
           <InquiryForm artifact={ARTIFACT_REF} whatsAppHref={WHATSAPP_HREF} />
         </Reveal>
 
-        <p className="mt-14 text-center text-sm text-white/40">
+        <p className="mt-16 text-center text-[13px] tracking-wide text-[var(--color-cream-3)]">
           Or write directly to{' '}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="text-white/70 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
+            className="link-editorial text-[var(--color-cream)]"
           >
             {CONTACT_EMAIL}
           </a>
@@ -325,14 +281,12 @@ function InquireSection() {
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-black">
-      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-xs text-white/40 md:flex-row">
-        <span className="font-mono tracking-[0.2em] uppercase">
-          The Artisan&rsquo;s Eye
-        </span>
+    <footer className="border-t border-[var(--hairline)] bg-[var(--color-ink-2)]">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-10 text-[11px] uppercase tracking-[0.3em] text-[var(--color-cream-3)] md:flex-row">
+        <span>The Artisan&rsquo;s Eye</span>
         <a
           href={`mailto:${CONTACT_EMAIL}`}
-          className="transition-colors hover:text-white/70"
+          className="link-editorial normal-case tracking-normal"
         >
           {CONTACT_EMAIL}
         </a>

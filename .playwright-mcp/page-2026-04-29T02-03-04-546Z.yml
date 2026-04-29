@@ -1,0 +1,102 @@
+- generic [active] [ref=e1]:
+  - region "The Artisan's Eye" [ref=e2]:
+    - button "Skip intro animation" [ref=e3]: Skip
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - paragraph [ref=e7]: Thangka · Kathmandu Valley
+      - button "Thousand-Armed Avalokiteshvara thangka with red brocade border. Open 360 room view." [ref=e9] [cursor=pointer]:
+        - img [ref=e10]
+        - generic: 360° Artifact
+      - generic [ref=e17]:
+        - heading "Thousand-Armed Avalokiteshvara Thangka" [level=1] [ref=e19]
+        - paragraph [ref=e21]: Kathmandu Valley atelier · artist documentation pending
+        - paragraph [ref=e23]: A black-and-gold meditation painting centered on Avalokiteshvara, the bodhisattva of compassion, with eleven faces and a halo-like field of hands rendered in luminous gold linework.
+      - generic [ref=e25]:
+        - generic [ref=e26]: One available · inquire for price
+        - link "Inquire" [ref=e27] [cursor=pointer]:
+          - /url: "#inquire"
+    - generic [ref=e29]:
+      - generic [ref=e32]: Artist portrait pending
+      - generic [ref=e33]:
+        - paragraph [ref=e35]: The Artisan
+        - heading "Kathmandu Valley atelier" [level=2] [ref=e37]
+        - generic [ref=e39]:
+          - term [ref=e40]: Region
+          - definition [ref=e41]: Kathmandu Valley, Nepal
+          - term [ref=e42]: Documentation
+          - definition [ref=e43]: Artist name and studio notes pending
+          - term [ref=e44]: Focus
+          - definition [ref=e45]: Buddhist thangka painting
+        - generic [ref=e46]:
+          - paragraph [ref=e48]: This work comes from the living Himalayan thangka tradition, where painters learn deity proportion, gesture, color, and ornament as a disciplined visual language. The full artist profile is being documented before sale so the buyer receives the story with the object, not as an afterthought.
+          - paragraph [ref=e50]: "The most striking labor here is the gold linework: thousands of fine marks building the halos, floral scrolls, jewelry, textiles, and retinue figures against a black ground."
+        - blockquote [ref=e52]: "“ The artist note for this piece is being verified. In the meantime, the painting speaks through its precision: compassion drawn as attention, repeated hand by hand. ”"
+    - generic [ref=e54]:
+      - paragraph [ref=e56]: Cultural Context
+      - heading "What this thangka depicts" [level=2] [ref=e58]
+      - generic [ref=e59]:
+        - paragraph [ref=e61]: "The central figure is identified by visible iconography as Eleven-Headed, Thousand-Armed Avalokiteshvara, known in Tibetan as Chenrezig. Avalokiteshvara is the bodhisattva of compassion: the awakened quality that sees suffering clearly and responds."
+        - paragraph [ref=e63]: "The eleven faces rise above the crown, looking outward in every direction. Around the body, the many arms open into a circular field. In many depictions of this form, eyes appear in the palms: a visual promise that compassion must both see and act."
+        - paragraph [ref=e65]: This example is especially dramatic because it uses a black ground with gold drawing. The dark field quiets the image; the gold brings the figure forward slowly, detail by detail, as the viewer moves closer.
+      - generic [ref=e66]:
+        - article [ref=e68]:
+          - heading "Eleven faces" [level=3] [ref=e69]
+          - paragraph [ref=e70]: Stacked heads signal the ability to perceive suffering in every direction. In traditional readings, the uppermost head is associated with Amitabha Buddha.
+        - article [ref=e72]:
+          - heading "Radiating arms" [level=3] [ref=e73]
+          - paragraph [ref=e74]: "The surrounding field of hands turns compassion into action: seeing, reaching, blessing, protecting, and responding without limit."
+        - article [ref=e76]:
+          - heading "Hands at the heart" [level=3] [ref=e77]
+          - paragraph [ref=e78]: The central joined hands hold the vow at the center of the image. The figure is not only majestic; it is devotional and inwardly still.
+        - article [ref=e80]:
+          - heading "Black and gold ground" [level=3] [ref=e81]
+          - paragraph [ref=e82]: The dark field gives the painting gravity and depth, while gold linework makes the figure appear to emerge from the surface.
+    - generic [ref=e84]:
+      - paragraph [ref=e86]: The Piece
+      - heading "Materials & dimensions" [level=2] [ref=e88]
+      - generic [ref=e89]:
+        - generic [ref=e91]:
+          - term [ref=e92]: Materials
+          - definition [ref=e93]: Pigment and gold detailing on cloth, mounted with silk brocade
+        - generic [ref=e95]:
+          - term [ref=e96]: Dimensions (unframed)
+          - definition [ref=e97]: Painted image measurements pending verification
+        - generic [ref=e99]:
+          - term [ref=e100]: Dimensions (with brocade)
+          - definition [ref=e101]: Full textile measurements pending verification
+        - generic [ref=e103]:
+          - term [ref=e104]: Time to make
+          - definition [ref=e105]: Artist documentation pending
+        - generic [ref=e107]:
+          - term [ref=e108]: Condition
+          - definition [ref=e109]: Photographed with brocade mount; final condition notes available on inquiry
+        - generic [ref=e111]:
+          - term [ref=e112]: Ships from
+          - definition [ref=e113]: United States · worldwide on request
+    - generic [ref=e115]:
+      - generic [ref=e116]:
+        - paragraph [ref=e118]: Acquire
+        - heading "Inquire to purchase" [level=2] [ref=e120]
+        - paragraph [ref=e122]: One piece, one buyer. Tell us a little about what draws you to this thangka - we’ll respond personally within one business day.
+      - generic [ref=e124]:
+        - generic [ref=e125]:
+          - generic [ref=e126]: Your name
+          - textbox "Your name" [ref=e127]
+        - generic [ref=e128]:
+          - generic [ref=e129]: Email
+          - textbox "Email" [ref=e130]
+        - generic [ref=e131]:
+          - generic [ref=e132]: Message— tell us what draws you to this piece
+          - textbox "Message— tell us what draws you to this piece" [ref=e133]
+        - generic [ref=e134]:
+          - button "Send inquiry" [ref=e135]
+          - link "Message on WhatsApp" [ref=e136] [cursor=pointer]:
+            - /url: https://wa.me/15715030608
+      - paragraph [ref=e137]:
+        - text: Or write directly to
+        - link "ashishforllc@gmail.com" [ref=e138] [cursor=pointer]:
+          - /url: mailto:ashishforllc@gmail.com
+    - generic [ref=e140]:
+      - generic [ref=e141]: The Artisan’s Eye
+      - link "ashishforllc@gmail.com" [ref=e142] [cursor=pointer]:
+        - /url: mailto:ashishforllc@gmail.com
