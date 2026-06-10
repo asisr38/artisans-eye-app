@@ -36,7 +36,7 @@ npm run start        # Start production server
 npm run lint         # ESLint check
 ```
 
-Requires Node `^20.10.0` or `^22.0.0`.
+Requires Node `>=20.10.0`.
 
 ## Architecture
 

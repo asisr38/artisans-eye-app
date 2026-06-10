@@ -6,10 +6,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   productionBrowserSourceMaps: false,
-  eslint: {
-    // Avoid blocking production builds on lint errors; CI can enforce separately
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     // Keep type checking on, but do not emit; Next already type-checks in build step
     ignoreBuildErrors: false,
@@ -20,20 +16,6 @@ const nextConfig: NextConfig = {
   },
   compiler: {
     removeConsole: isProd ? { exclude: ['error'] } : false,
-  },
-  experimental: {
-    // Intentionally empty for production stability
-  },
-  webpack: (config) => {
-    // Silence video texture warnings in some host environments
-    config.module.parser = {
-      ...config.module.parser,
-      javascript: {
-        ...(config.module.parser as any)?.javascript || {},
-        url: 'relative',
-      },
-    }
-    return config
   },
 }
 
