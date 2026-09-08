@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 
-type State = 'idle' | 'submitting' | 'success' | 'error'
+type State = 'idle' | 'submitting' | 'success' | 'preview' | 'error'
 
 type Props = {
   artifact?: string
@@ -38,6 +39,11 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
         setState('error')
         return
       }
+      if (data?.sent === false) {
+        setState('preview')
+        return
+      }
+      track('inquiry_sent')
       setState('success')
     } catch {
       setErrorMsg('Network error. Please try again.')
@@ -45,9 +51,17 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
     }
   }
 
+  if (state === 'preview')
+    return (
+      <p role="status" className="py-12 text-[var(--color-cream)]">
+        This preview did not send an email. Please use the gallery email link or WhatsApp to contact
+        us.
+      </p>
+    )
+
   if (state === 'success') {
     return (
-      <div className="mx-auto max-w-xl py-20 text-center">
+      <div role="status" className="mx-auto max-w-xl py-20 text-center">
         <p className="font-display mb-5 text-[clamp(1.75rem,3.6vw,2.5rem)] text-[var(--color-cream)]">
           Thank you.
         </p>
@@ -113,7 +127,9 @@ export default function InquiryForm({ artifact, whatsAppHref }: Props) {
       </div>
 
       {errorMsg && (
-        <p className="text-sm text-[var(--color-bronze-soft)]">{errorMsg}</p>
+        <p role="alert" className="text-sm text-[var(--color-bronze-soft)]">
+          {errorMsg}
+        </p>
       )}
 
       <div className="flex flex-col gap-3 pt-4 sm:flex-row">

@@ -16,9 +16,7 @@ export type InquiryPayload = {
   artifact?: string
 }
 
-export type InquiryResult =
-  | { ok: true }
-  | { ok: false; reason: 'not_configured' | 'send_failed' }
+export type InquiryResult = { ok: true } | { ok: false; reason: 'not_configured' | 'send_failed' }
 
 export async function sendInquiry(payload: InquiryPayload): Promise<InquiryResult> {
   if (!resend) return { ok: false, reason: 'not_configured' }

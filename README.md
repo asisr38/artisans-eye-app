@@ -1,58 +1,29 @@
-# The Artisan's Eye
+# The Artisan’s Eye
 
-A 3D-first DTC brand for Nepali handcraft — thangka paintings and sculptures, each presented with the artisan story and cultural context a piece deserves.
+A contemporary gallery for Nepali handcraft, starting with a single Avalokiteshvara thangka and a personal purchase inquiry.
 
-The current build is the MVP: a single-artifact page testing whether Western buyers will send qualified inquiries for a single, beautifully presented piece from an unknown brand.
+## Run
 
-## Getting Started
+Use Node 24 LTS (`.nvmrc`) and the existing pnpm lockfile. Node 26 currently triggers a Tailwind loader deprecation warning.
 
-```bash
-npm install
-npm run dev
+```sh
+pnpm run dev
+pnpm run build
+pnpm run lint
+pnpm test
+pnpm run format:check
 ```
 
-Visit `http://localhost:3000`.
+Use `pnpm run format` to apply the shared formatting rules.
 
-## Deploy (Vercel)
+The homepage includes a Blender-authored interactive gallery, camera presets, image zoom/pan, cultural context, an honest object record, and an inquiry form. `/room` retains the walk-through experience with the same architecture. Next.js 16 / React 19 / TypeScript / R3F. Fonts are local, with licenses in `app/fonts`, so builds do not fetch Google Fonts.
 
-- Build: `next build`
-- Start: `next start`
-- Requires Node `^20.10.0` or `^22.0.0`.
+## Continue
 
-### Environment variables
+Read `docs/HANDOFF.md` for status, `PRODUCT.md` and `DESIGN.md` for direction, and `assets/blender/README.md` for the computer-use asset workflow. Original photography and the prior 3D eye components are preserved.
 
-```
-RESEND_API_KEY=...   # required in production; inquiry form posts will 503 without it
-```
+## Inquiry delivery
 
-In development, omitting `RESEND_API_KEY` is fine — the `/api/inquire` route logs
-the submission and returns a fake success so the UI flow can be exercised. In
-production, missing the key returns `503 email_not_configured` so the problem
-surfaces immediately.
+Production requires `RESEND_API_KEY`; without it the endpoint returns 503. Configure a verified sender in `lib/email.ts` before launch. Development without the key does not send an email and the form explicitly reports that fact. Do not confuse a local form test with delivery verification.
 
-The sender address is `onboarding@resend.dev` (Resend&rsquo;s default for
-unverified accounts). Once a domain is verified in Resend, swap the `FROM_ADDRESS`
-constant in `lib/email.ts` to `inquiries@<yourdomain>`.
-
-## Stack
-
-- Next.js 15 (App Router, Turbopack)
-- React 19 + TypeScript
-- React Three Fiber + drei + three.js
-- Zustand (scene state)
-- Tailwind v4
-
-## Structure
-
-- `app/` — App Router pages. Currently only `/` and `/api/health`.
-- `components/3d/` — HeroCanvas, EyeModel, CameraRig, Starfield. Client-only.
-- `components/hero/` — Hero composition.
-- `components/state/useSceneStore.ts` — Zustand scene state.
-- `lib/api.ts`, `lib/validate.ts` — API handler primitives (validation, rate limiting, structured errors).
-- `public/artifacts/3d/eye.glb` — the brand eye.
-
-## Notes
-
-- All assets are local under `public/`.
-- The 3D eye is the brand signature — it is not a Web3/NFT element and no on-chain functionality exists in this codebase.
-- See `CLAUDE.md` for scope boundaries and the upcoming PR sequence.
+Artist identity, making history, measurements, condition, and pricing still require verification. The gallery is original exhibition scenery and its scale is illustrative. Nothing has been published by this revamp.

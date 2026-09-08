@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+build/
+assets/
+public/
+app/fonts/
+pnpm-lock.yaml
+next-env.d.ts
+*.tsbuildinfo
+.claude/
+.playwright-mcp/

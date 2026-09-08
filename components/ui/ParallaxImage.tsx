@@ -41,10 +41,7 @@ export default function ParallaxImage({
       ref={ref}
       className={`relative ${aspect} w-full max-w-2xl overflow-hidden bg-[var(--color-ink-2)] ring-1 ring-[var(--hairline)] ${className}`}
     >
-      <motion.div
-        className="absolute inset-0"
-        style={reduceMotion ? undefined : { y, scale }}
-      >
+      <motion.div className="absolute inset-0" style={reduceMotion ? undefined : { y, scale }}>
         <Image
           src={src}
           alt={alt}

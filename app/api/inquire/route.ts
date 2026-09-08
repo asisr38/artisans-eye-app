@@ -23,7 +23,7 @@ export const POST = withRateLimit(
               code: 'email_not_configured',
               message: 'Email delivery is not configured on this deployment.',
             },
-            503
+            503,
           )
         }
         // Dev convenience: log the payload and return a fake success so the
@@ -35,10 +35,10 @@ export const POST = withRateLimit(
 
       return fail(
         { code: 'email_send_failed', message: 'Could not deliver inquiry. Please try again.' },
-        502
+        502,
       )
     }
 
     return ok({ sent: true })
-  })
+  }),
 )

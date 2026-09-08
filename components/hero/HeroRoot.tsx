@@ -1,12 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useSceneStore } from '../state/useSceneStore'
 
 const CanvasOverlay = dynamic(() => import('../3d/CanvasOverlay'), { ssr: false })
+
+// AE-101: the walkable room loads only when the visitor opens it — the
+// chunk stays out of the / initial bundle.
+const ThangkaRoomExperience = dynamic(() => import('../3d/room/ThangkaRoomExperience'), {
+  ssr: false,
+})
 
 const INTRO_DURATION_MS = 3500
 const SESSION_KEY = 'artisans-eye-intro-played'
@@ -17,6 +23,8 @@ export const HeroRoot = () => {
   const introPhase = useSceneStore((s) => s.introPhase)
   const setIntroPhase = useSceneStore((s) => s.setIntroPhase)
   const reduceMotion = useReducedMotion()
+  const [roomOpen, setRoomOpen] = useState(false)
+  const viewArtifactRef = useRef<HTMLButtonElement>(null)
 
   // Decide whether to play the intro on mount.
   useEffect(() => {
@@ -71,6 +79,17 @@ export const HeroRoot = () => {
     <>
       <CanvasOverlay />
 
+      {roomOpen && (
+        <ThangkaRoomExperience
+          onClose={() => {
+            setRoomOpen(false)
+            // Return focus to the trigger. preventScroll: the Inquire path
+            // scrolls to #inquire right after closing.
+            viewArtifactRef.current?.focus({ preventScroll: true })
+          }}
+        />
+      )}
+
       <section
         className="relative min-h-[92svh] w-full overflow-hidden bg-[var(--color-ink)]"
         aria-label="The Artisan's Eye"
@@ -113,20 +132,21 @@ export const HeroRoot = () => {
                     A thousand hands of compassion
                   </h1>
                   <p className="mt-7 max-w-lg text-[16px] leading-[1.7] text-[var(--color-cream-2)] sm:text-[18px]">
-                    A black-and-gold meditation painting where the bodhisattva
-                    of compassion emerges through luminous gold linework, red
-                    brocade, and a field of attentive hands.
+                    A black-and-gold meditation painting where the bodhisattva of compassion emerges
+                    through luminous gold linework, red brocade, and a field of attentive hands.
                   </p>
                   <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                    <a
-                      href="#artifact"
-                      className="flex min-h-[50px] items-center justify-center border border-[var(--color-cream)] bg-[var(--color-cream)] px-7 text-center text-[11px] uppercase tracking-[0.3em] text-[var(--color-ink)] transition-colors duration-500 hover:bg-transparent hover:text-[var(--color-cream)]"
+                    <button
+                      ref={viewArtifactRef}
+                      type="button"
+                      onClick={() => setRoomOpen(true)}
+                      className="flex min-h-[50px] items-center justify-center border border-[var(--color-cream)] bg-[var(--color-cream)] px-7 text-center text-[11px] uppercase tracking-[0.3em] text-[var(--color-ink)] transition-colors duration-500 hover:bg-transparent hover:text-[var(--color-cream)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-cream)]"
                     >
                       View artifact
-                    </a>
+                    </button>
                     <a
                       href="#inquire"
-                      className="flex min-h-[50px] items-center justify-center border border-[var(--hairline-strong)] px-7 text-center text-[11px] uppercase tracking-[0.3em] text-[var(--color-cream-2)] transition-colors duration-500 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
+                      className="flex min-h-[50px] items-center justify-center border border-[var(--hairline-strong)] px-7 text-center text-[11px] uppercase tracking-[0.3em] text-[var(--color-cream-2)] transition-colors duration-500 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-cream)]"
                     >
                       Inquire
                     </a>
@@ -196,11 +216,7 @@ export const HeroRoot = () => {
                   className="animate-bounce"
                   aria-hidden="true"
                 >
-                  <path
-                    d="M6 9l6 6 6-6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
             </motion.a>

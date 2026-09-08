@@ -11,12 +11,7 @@ type Props = {
 
 // Apple-style word-by-word stagger. Each word rises from below with a small
 // delay. Whole phrase clips below the baseline until it resolves.
-export default function RevealHeading({
-  children,
-  className,
-  delay = 0,
-  as = 'h2',
-}: Props) {
+export default function RevealHeading({ children, className, delay = 0, as = 'h2' }: Props) {
   const reduceMotion = useReducedMotion()
   const Tag = as
 

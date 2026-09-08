@@ -11,13 +11,7 @@ type Props = {
   className?: string
 }
 
-export default function Reveal({
-  children,
-  delay = 0,
-  y = 24,
-  once = true,
-  className,
-}: Props) {
+export default function Reveal({ children, delay = 0, y = 24, once = true, className }: Props) {
   const reduceMotion = useReducedMotion()
 
   if (reduceMotion) {

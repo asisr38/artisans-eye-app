@@ -23,10 +23,7 @@ export type ApiError = {
 }
 
 export const ok = <T>(data: T, init?: number | ResponseInit) =>
-  NextResponse.json(
-    { ok: true, data },
-    typeof init === 'number' ? { status: init } : init
-  )
+  NextResponse.json({ ok: true, data }, typeof init === 'number' ? { status: init } : init)
 
 export const fail = (error: ApiError, status = 400) =>
   NextResponse.json({ ok: false, error }, { status })
@@ -40,11 +37,7 @@ export const fail = (error: ApiError, status = 400) =>
 export type RouteCtx = { params: Promise<Record<string, string | string[] | undefined>> }
 export type RouteHandler = (req: NextRequest, ctx: RouteCtx) => Promise<Response> | Response
 
-type Handler<T> = (
-  req: NextRequest,
-  parsed: T,
-  ctx: RouteCtx
-) => Promise<Response> | Response
+type Handler<T> = (req: NextRequest, parsed: T, ctx: RouteCtx) => Promise<Response> | Response
 
 export function withBody<T>(schema: Validator<T>, handler: Handler<T>): RouteHandler {
   return async (req, ctx) => {
@@ -62,7 +55,7 @@ export function withBody<T>(schema: Validator<T>, handler: Handler<T>): RouteHan
           message: 'Request body failed validation',
           details: result.error.issues,
         },
-        400
+        400,
       )
     }
     return handler(req, result.data, ctx)
@@ -83,7 +76,7 @@ export function withQuery<T>(schema: Validator<T>, handler: Handler<T>): RouteHa
           message: 'Query parameters failed validation',
           details: result.error.issues,
         },
-        400
+        400,
       )
     }
     return handler(req, result.data, ctx)
@@ -135,7 +128,7 @@ export function withRateLimit(opts: RateLimitOpts, handler: RouteHandler): Route
               message: `Too many requests. Retry in ${retryAfter}s.`,
             },
           },
-          { status: 429, headers: { 'Retry-After': String(retryAfter) } }
+          { status: 429, headers: { 'Retry-After': String(retryAfter) } },
         )
       }
     }
@@ -170,10 +163,7 @@ export async function requireSession(req: NextRequest): Promise<Session | Respon
   }
   const mockUser = req.headers.get('x-mock-user')
   if (!mockUser) {
-    return fail(
-      { code: 'unauthorized', message: 'Authentication required' },
-      401
-    )
+    return fail({ code: 'unauthorized', message: 'Authentication required' }, 401)
   }
   return { userId: mockUser, role: 'buyer' }
 }
@@ -182,7 +172,7 @@ export async function requireSession(req: NextRequest): Promise<Session | Respon
 
 export async function fetchWithTimeout(
   url: string,
-  init: RequestInit & { timeoutMs?: number } = {}
+  init: RequestInit & { timeoutMs?: number } = {},
 ): Promise<Response> {
   const { timeoutMs = 8_000, ...rest } = init
   return fetch(url, { ...rest, signal: AbortSignal.timeout(timeoutMs) })

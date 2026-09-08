@@ -1,13 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-} from 'framer-motion'
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { useRef, useState } from 'react'
 
@@ -19,13 +13,7 @@ type Props = {
   onEnter?: () => void
 }
 
-export default function Thangka360Viewer({
-  src,
-  textureSrc,
-  alt,
-  priority,
-  onEnter,
-}: Props) {
+export default function Thangka360Viewer({ src, textureSrc, alt, priority, onEnter }: Props) {
   const stageRef = useRef<HTMLDivElement>(null)
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null)
   const reduceMotion = useReducedMotion()
@@ -79,7 +67,9 @@ export default function Thangka360Viewer({
     <div
       ref={stageRef}
       className={`relative mx-auto flex aspect-[4/5] w-full max-w-5xl touch-none items-center justify-center overflow-hidden rounded-sm border border-white/10 bg-[#070708] shadow-2xl shadow-black/50 md:aspect-[16/10] ${
-        onEnter ? 'cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300/80' : ''
+        onEnter
+          ? 'cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300/80'
+          : ''
       }`}
       onPointerDown={(event) => {
         setActive(true)

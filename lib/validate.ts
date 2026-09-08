@@ -16,8 +16,7 @@
 
 export type Issue = { path: (string | number)[]; message: string }
 export type ValidationResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: { issues: Issue[] } }
+  { success: true; data: T } | { success: false; error: { issues: Issue[] } }
 
 export interface Validator<T> {
   safeParse(input: unknown): ValidationResult<T>
@@ -97,8 +96,8 @@ export function number(opts?: { min?: number; max?: number; int?: boolean }): Fi
         typeof input === 'number'
           ? input
           : typeof input === 'string' && input.length > 0 && !Number.isNaN(Number(input))
-          ? Number(input)
-          : NaN
+            ? Number(input)
+            : NaN
       if (!Number.isFinite(n)) return err(path, 'expected finite number')
       if (opts?.int && !Number.isInteger(n)) return err(path, 'expected integer')
       if (opts?.min !== undefined && n < opts.min) return err(path, `min ${opts.min}`)

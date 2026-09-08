@@ -24,7 +24,7 @@ export const CameraRig = ({ children }: CameraRigProps) => {
       camera.position as unknown as THREE.Vector3,
       target as unknown as THREE.Vector3,
       lerpSpeed,
-      delta
+      delta,
     )
     camera.lookAt(0, 0, 0)
   })

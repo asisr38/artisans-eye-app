@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Blender working backups; keep editable source files
+*.blend[0-9]*
+/assets/blender/archive/
+__pycache__/
+*.pyc
+
+# Local browser capture output
+/.playwright-mcp/

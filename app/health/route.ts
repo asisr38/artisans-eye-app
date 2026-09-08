@@ -12,5 +12,3 @@ export async function GET() {
     env: process.env.VERCEL ? 'vercel' : 'local',
   })
 }
-
-

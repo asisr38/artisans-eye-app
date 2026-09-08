@@ -40,7 +40,7 @@ const Starfield = ({ count = 1200, minRadius = 20, maxRadius = 60 }: StarfieldPr
   })
 
   return (
-    <points ref={pointsRef} frustumCulled>
+    <points ref={pointsRef}>
       <bufferGeometry attach="geometry">
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
@@ -58,5 +58,3 @@ const Starfield = ({ count = 1200, minRadius = 20, maxRadius = 60 }: StarfieldPr
 }
 
 export default Starfield
-
-

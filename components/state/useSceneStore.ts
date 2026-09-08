@@ -36,5 +36,5 @@ export const useSceneStore = create<SceneState>()(
       if (get().introPhase === phase) return
       set({ introPhase: phase })
     },
-  }))
+  })),
 )

@@ -15,14 +15,7 @@ type Props = {
 
 // Photo pins while bio scrolls past on desktop. Mobile collapses to a single
 // column with no pin.
-export default function StickyArtisan({
-  photoSlot,
-  eyebrow,
-  name,
-  meta,
-  bio,
-  quote,
-}: Props) {
+export default function StickyArtisan({ photoSlot, eyebrow, name, meta, bio, quote }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
 

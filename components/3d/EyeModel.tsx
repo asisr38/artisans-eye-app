@@ -18,7 +18,13 @@ type EyeModelProps = {
 const EyeModelLoader = () => (
   <mesh>
     <sphereGeometry args={[0.5, 32, 32]} />
-    <meshStandardMaterial color="#4a5568" metalness={0.1} roughness={0.8} transparent opacity={0.6} />
+    <meshStandardMaterial
+      color="#4a5568"
+      metalness={0.1}
+      roughness={0.8}
+      transparent
+      opacity={0.6}
+    />
   </mesh>
 )
 
@@ -40,7 +46,7 @@ const EyeModelCore = ({
   const pupilRRef = useRef(0.18)
   const mousePointerRef = useRef({ x: 0, y: 0, t: 0 })
 
-  const centeredScene = useMemo(() => {
+  const customizedScene = useMemo(() => {
     const root = scene.clone(true)
     const box = new THREE.Box3().setFromObject(root)
     const size = new THREE.Vector3()
@@ -53,11 +59,7 @@ const EyeModelCore = ({
     const s = maxDim > 0 ? target / maxDim : 1
     root.scale.setScalar(s)
     pupilRRef.current = Math.min(size.x, size.y) * s * 0.18
-    return root
-  }, [scene, scaleHint])
 
-  const customizedScene = useMemo(() => {
-    const root = centeredScene.clone(true)
     const tint = tintColor ? new THREE.Color(tintColor) : null
     const iris = irisColor ? new THREE.Color(irisColor) : null
     const hasMetal = typeof metalness === 'number'
@@ -65,12 +67,13 @@ const EyeModelCore = ({
     const hasEnv = typeof envIntensity === 'number'
 
     root.traverse((obj) => {
-      // @ts-expect-error - dynamic mesh check
-      if (!obj?.isMesh) return
-      const mesh = obj as THREE.Mesh
-      mesh.castShadow = true
-      mesh.receiveShadow = true
-      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+      if (!(obj instanceof THREE.Mesh)) return
+      const mesh = obj
+      // Object3D.clone shares materials with the useGLTF cache — clone them
+      // before modifying so the cached scene stays pristine.
+      const shared = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+      const mats = shared.map((m) => m.clone())
+      mesh.material = Array.isArray(mesh.material) ? mats : mats[0]
       mats.forEach((m) => {
         const mat = m as THREE.MeshStandardMaterial
         if (!mat || !('color' in mat)) return
@@ -87,14 +90,37 @@ const EyeModelCore = ({
         if (hasEnv) mat.envMapIntensity = THREE.MathUtils.clamp(envIntensity as number, 0, 5)
         mat.needsUpdate = true
       })
-      const objName = (mesh.name || '').toLowerCase()
-      if (!irisRef.current && (objName.includes('iris') || objName.includes('eye_iris'))) {
-        irisRef.current = mesh
-      }
     })
 
     return root
-  }, [centeredScene, tintColor, irisColor, metalness, roughness, envIntensity])
+  }, [scene, scaleHint, tintColor, irisColor, metalness, roughness, envIntensity])
+
+  // Dispose our cloned materials when the customized scene is replaced or
+  // unmounts. Geometries stay shared with the useGLTF cache — never disposed.
+  useEffect(() => {
+    // Locate the iris in the active scene here (not during render) so the
+    // ref always tracks the scene that is actually mounted.
+    let found: THREE.Object3D | null = null
+    customizedScene.traverse((obj) => {
+      if (found || !(obj instanceof THREE.Mesh)) return
+      const name = (obj.name || '').toLowerCase()
+      if (name.includes('iris') || name.includes('eye_iris')) found = obj
+    })
+    irisRef.current = found
+    irisBaseRef.current = null
+
+    return () => {
+      // The refs point into the scene being torn down — clear them so a
+      // useFrame tick between commits can't touch disposed materials.
+      irisRef.current = null
+      irisBaseRef.current = null
+      customizedScene.traverse((obj) => {
+        if (!(obj instanceof THREE.Mesh)) return
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material]
+        mats.forEach((m) => m?.dispose())
+      })
+    }
+  }, [customizedScene])
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
@@ -123,12 +149,12 @@ const EyeModelCore = ({
     g.rotation.x = THREE.MathUtils.clamp(
       THREE.MathUtils.lerp(g.rotation.x, targetX + idleX, k),
       -0.4,
-      0.4
+      0.4,
     )
     g.rotation.y = THREE.MathUtils.clamp(
       THREE.MathUtils.lerp(g.rotation.y, targetY + idleY, k),
       -0.45,
-      0.45
+      0.45,
     )
 
     // Breathing scale.
