@@ -4,8 +4,8 @@ from pathlib import Path
 import bpy
 
 ROOT = Path(__file__).resolve().parents[2]
-assert bpy.context.scene.name.startswith('Artisans Eye | Valley Reference Study'), (
-    'Select the reference study scene before exporting'
+assert bpy.context.scene.name.startswith(('Artisans Eye | Sunlit House', 'Artisans Eye | Valley Reference Study')), (
+    'Select the Sunlit House or earlier reference study scene before exporting'
 )
 if bpy.context.object and bpy.context.object.mode != 'OBJECT':
     bpy.ops.object.mode_set(mode='OBJECT')

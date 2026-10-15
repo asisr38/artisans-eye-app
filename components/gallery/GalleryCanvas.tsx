@@ -1,47 +1,38 @@
 'use client'
 
-import { Canvas } from '@react-three/fiber'
-import { CameraControls, Environment, Lightformer } from '@react-three/drei'
-import { Suspense, useEffect, useRef, type ComponentRef } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { Environment, Lightformer } from '@react-three/drei'
+import { Suspense, useEffect } from 'react'
 import { ACESFilmicToneMapping } from 'three'
 import GalleryModel from './GalleryModel'
 import ThangkaWall from '../3d/room/ThangkaWall'
+import { journeyFrame } from './journey'
 import GalleryLights from '../3d/room/GalleryLights'
 
-export type GalleryView = 'room' | 'work'
-
-function Camera({ view, reducedMotion }: { view: GalleryView; reducedMotion: boolean }) {
-  const controls = useRef<ComponentRef<typeof CameraControls>>(null)
+function Camera({ progress, reducedMotion }: { progress: number; reducedMotion: boolean }) {
+  const { camera, size, invalidate } = useThree()
   useEffect(() => {
-    if (view === 'room')
-      void controls.current?.setLookAt(1.75, 1.78, 2.9, 0, 1.55, -3.7, !reducedMotion)
-    else void controls.current?.setLookAt(0, 1.62, -1.65, 0, 1.62, -3.8, !reducedMotion)
-  }, [view, reducedMotion])
-  return (
-    <CameraControls
-      ref={controls}
-      makeDefault
-      enabled
-      minDistance={1.7}
-      maxDistance={7.6}
-      minAzimuthAngle={-0.37}
-      maxAzimuthAngle={0.37}
-      minPolarAngle={1.25}
-      maxPolarAngle={1.7}
-      smoothTime={0.6}
-      mouseButtons={{ left: 1, middle: 0, right: 0, wheel: 0 }}
-      touches={{ one: 64, two: 0, three: 0 }}
-    />
-  )
+    const frame = journeyFrame(progress, reducedMotion)
+    camera.position.set(...frame.position)
+    camera.lookAt(...frame.target)
+    if ('fov' in camera) {
+      // Three cameras are imperative scene objects owned by this Canvas.
+      // eslint-disable-next-line react-hooks/immutability
+      camera.fov = frame.fov + (size.width / size.height < 0.85 ? 13 : 0)
+      camera.updateProjectionMatrix()
+    }
+    invalidate()
+  }, [camera, size.width, size.height, progress, reducedMotion, invalidate])
+  return null
 }
 
 export default function GalleryCanvas({
-  view,
+  progress,
   reducedMotion,
   onReady,
   onFailed,
 }: {
-  view: GalleryView
+  progress: number
   reducedMotion: boolean
   onReady: () => void
   onFailed: () => void
@@ -51,7 +42,7 @@ export default function GalleryCanvas({
       frameloop="demand"
       shadows="percentage"
       dpr={[1, 1.5]}
-      camera={{ position: [1.75, 1.78, 2.9], fov: 50, near: 0.05, far: 35 }}
+      camera={{ position: [-1.9, 1.72, 3.1], fov: 60, near: 0.05, far: 35 }}
       gl={{ antialias: true, alpha: false }}
       onCreated={({ gl }) => {
         gl.toneMapping = ACESFilmicToneMapping
@@ -75,7 +66,7 @@ export default function GalleryCanvas({
         <ThangkaWall />
         <Ready onReady={onReady} />
       </Suspense>
-      <Camera view={view} reducedMotion={reducedMotion} />
+      <Camera progress={progress} reducedMotion={reducedMotion} />
     </Canvas>
   )
 }

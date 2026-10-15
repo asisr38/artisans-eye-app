@@ -14,16 +14,20 @@ Jost for human-scale gallery wayfinding and body text; Bodoni Moda for brief dis
 
 ## Composition
 
-Asymmetric split hero: small introduction beside a large interactive gallery. The gallery opens immediately, no blocking intro. Subsequent sections provide image inspection, context, material record, and inquiry. Mobile becomes one column with a 430px minimum gallery viewport.
+A full-height gallery opens immediately with a small paper caption and chapter navigation. Native scrolling guides Arrival → The room → The work, followed by the original photograph study, context, record and inquiry. The right-hand opening reveals a planted courtyard, with linen and terracotta furnishings. Mobile retains the chapter bar and uses wider camera framing. Implementation and reference decisions: docs/HOUSE-IMPLEMENTATION-PLAN.md.
 
 ## Motion and interaction
 
-Demand-rendered 3D with damped camera preset transitions; orbit bounded to the interior. Reduced motion snaps presets. Image study uses zoom controls and bounded drag/pan, reset, keyboard, and touch pinch. Preserve ordinary page scrolling outside explicit inspection mode.
+Demand-rendered 3D with native scroll-driven camera movement and explicit chapter buttons. Reduced motion selects discrete stationary views. Free exploration remains at /room. Image study uses zoom controls and bounded drag/pan, reset, keyboard, and touch pinch. Preserve ordinary page scrolling; do not intercept wheel or touch events in the guided gallery.
 
 ## Asset pipeline
 
-Editable source: assets/blender/bhaktapur-gallery-v2.blend. Reproducible authoring script: assets/blender/build-gallery.py. Runtime: public/artifacts/3d/bhaktapur-gallery.glb. Product photography stays separate from scenery. Dimensions of the staged painting are illustrative until real measurements are verified.
+Editable source: assets/blender/bhaktapur-gallery-v4.blend. Reproducible authoring script: assets/blender/build-gallery.py. Runtime: public/artifacts/3d/bhaktapur-gallery.glb. Product photography stays separate from scenery. Dimensions of the staged painting are illustrative until real measurements are verified.
 
 ## Valley architecture references
 
 The current room combines layered timber surrounds and geometric screens inspired by Bhaktapur woodcraft, courtyard-gallery rhythm from Patan, and the lime plaster, terracotta and close timber joists of Kathmandu’s restored Pashupati Museum. These are original adaptations, not a historical reconstruction. Sources and decisions: docs/ARCHITECTURE-REFERENCES.md.
+
+## Carved component implementation
+
+The approved `assets/blender/references/museum-components-v2.png` now informs real mesh geometry: pierced peacock screens, five-bay window bands, raised floral relief and carved supporting struts. Components are individually editable in the v4 source, alongside finer terracotta brick courses. `assets/blender/carved-components.py` is the reusable procedural source.

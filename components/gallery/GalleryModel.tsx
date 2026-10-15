@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { Mesh } from 'three'
 
 export default function GalleryModel() {
-  const { scene } = useGLTF('/artifacts/3d/bhaktapur-gallery.glb?v=2', '/draco/')
+  const { scene } = useGLTF('/artifacts/3d/bhaktapur-gallery.glb?v=4', '/draco/')
   const instance = useMemo(() => {
     const clone = scene.clone(true)
     clone.traverse((node) => {

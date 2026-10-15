@@ -41,34 +41,7 @@ export default function Home() {
         </nav>
       </header>
       <main id="main">
-        <section className="gallery-hero" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <p className="exhibition-label">
-              <span />A room for one remarkable work
-            </p>
-            <h1 id="hero-title">
-              A closer
-              <br /> way to
-              <br /> <em>see.</em>
-            </h1>
-            <p className="hero-description">
-              Nepali handcraft, encountered slowly. Step into the room. Spend time with the work.
-              Discover what draws you closer.
-            </p>
-            <a href="#study" className="text-link">
-              Meet the thangka <span aria-hidden="true">↘</span>
-            </a>
-            <div className="hero-footnote">
-              <span>Currently on view</span>
-              <p>
-                Avalokiteshvara
-                <br />
-                Thangka painting · Kathmandu Valley
-              </p>
-            </div>
-          </div>
-          <GalleryExperience />
-        </section>
+        <GalleryExperience />
         <div className="exhibition-strip">
           <span>The first study</span>
           <p>Thousand-Armed Avalokiteshvara</p>

@@ -1,0 +1,48 @@
+# Museum component references
+
+Generated with the built-in image generation tool on September 8, 2026. These are original visual concepts for Blender modelling, not measured drawings, scans, verified reconstructions, or production texture maps. The views are illustrative; reconcile proportions when modelling.
+
+- [Version 2 — current direction](museum-components-v2.png): Peacock Window-inspired module, five-bay gallery window, carved timber band, courtyard strut, fine brickwork, and lattice relief.
+- [Version 1 — earlier study](museum-components-v1.png): initial coordinated component sheet retained for comparison.
+
+## Source and interpretation
+
+[Altitude Himalaya: Museums in Bhaktapur](https://www.altitudehimalaya.com/blog/museums-in-bhaktapur), inspected September 8, 2026. Used the Wood Carving Museum facade and interior images as visual inspiration, plus its description of the Peacock Window and courtyard carving. Photographs were inspected in the browser; none were copied into the project.
+
+Observed facade cues: horizontal window bands, deep stepped sills and supports, dense dark timber detail against fine red brick courses. Version 2 adapts these proportions with neutral frontal lighting for legible modelling detail. The peacock motif is an original interpretation prompted from the article description, not a traced reproduction.
+
+## Suggested modelling sequence
+
+Start with the gallery window frame and one repeating bay, then the brick module and timber band. Model frames, sills, lattice holes and strut silhouettes as geometry; reserve baked normal/roughness detail for fine carving. The Peacock Window warrants a separate close-up sculpting study before modelling. Do not use the shaded reference board directly as a seamless material.
+
+## Final prompts
+
+### Version 1 — generation
+
+Use case: stylized-concept.
+Asset type: a high-resolution architectural object reference sheet for modelling modular assets in Blender for The Artisan's Eye, a contemporary Bhaktapur-inspired Nepali craft museum.
+Primary request: create ONE beautifully detailed, practical reference board of windows, terracotta bricks, and intricate carved wooden architectural components. This is an original Newari-inspired design study, not a measured drawing or a claimed replica of a monument.
+Composition: landscape 3:2 sheet, highest available resolution. Six generously spaced rectangular cells in a precise 3-column, 2-row grid on a continuous warm ivory studio background. Each cell has one isolated component family, fully visible with ample margins, no cropping or overlap, easy to crop later. Very small sober labels only, no large heading, no mood-board photos, no room scene.
+Cell 01, label "01 / LATTICE WINDOW": a straight-on orthographic front view of a beautiful complete rectangular Newari-inspired timber lattice window, three slender vertical bays, deeply layered stepped surround, intricate diamond lattice with actual open holes, restrained small floral medallions, carved lintel and projecting sill. Beside it a smaller matching three-quarter view of EXACTLY the same window to reveal its thickness and joinery. No glass, no wall attached.
+Cell 02, label "02 / SHUTTER WINDOW": a smaller matching rectangular carved wooden window with two solid recessed-panel shutters, one partly open, showing frame depth and believable hinges. Original foliate carving along its surround, discreet aged brass hardware. Entire assembly isolated.
+Cell 03, label "03 / CARVED LINTEL": one long horizontal timber lintel, front-facing with a small depth reveal, repeating hand-carved scrolling leaves, lotus-inspired rosettes and a layered stepped cornice; crisp deeply relieved detail that a modeller can understand, coherent motif repetition and clear silhouette.
+Cell 04, label "04 / POST & BRACKET": one full slender square timber post with a broad sculpted capital and an elegant carved diagonal supporting bracket. Three-quarter view makes the structural connection readable. Foliate and geometric ornament, believable load-bearing solid wood, no figurative deities.
+Cell 05, label "05 / TERRACOTTA BRICK": a small square standalone brickwork sample in running bond with narrow pale lime-colored mortar joints; thin warm rust-red hand-formed bricks with subtle variation, softened edges and fine pores. Two isolated matching loose bricks below, one front/top three-quarter view and one end view. Show authentic tactile material character without extreme ruin or dirt. No timber in this cell.
+Cell 06, label "06 / RELIEF DETAIL": an enlarged straight-on square timber carving sample with a central eight-petal floral rosette, interlocking leaf scrolls and a clean framed edge; very fine crisp chisel marks, clear carving depth, useful as a sculpting reference. A small matching side-profile piece reveals relief thickness.
+Style: exceptional architectural conservation workshop product photography, physically believable handcrafted objects, crisp fine detail, restrained premium museum art direction. Consistent warm medium-brown walnut-like timber with subtle honey highlights and visible grain, terracotta red brick, warm ivory background. The wood must be bright and readable, NEVER almost black.
+Lighting: broad neutral diffuse studio illumination from front-left plus ample frontal fill, soft short contact shadows only. All carvings clearly legible, no dramatic shadows, no glare, no cinematic vignette or excessive weathering.
+Constraints: original coherent visual language across all six components, plausible joinery and material thickness. No people, no paintings, no statues, no invented historical labels, no dimensions or rulers, no watermarks, no website UI. Labels exactly as supplied in small elegant sans-serif. Objects dominate the board.
+
+### Version 2 — edit of Version 1
+
+Use case: precise-object-edit.
+Edit the supplied museum-component reference sheet into a second, more specifically Bhaktapur-inspired Blender modelling reference. Keep the excellent crisp studio presentation, warm ivory background, six-cell landscape layout, isolated complete objects, small numbered captions and readable lighting. Re-design the objects using the following inspected reference observations rather than generic decorative furniture styling.
+Source inspiration: Altitude Himalaya's Museums in Bhaktapur article, especially its photograph of the Wood Carving Museum / Pujari Math: low horizontal bands of densely detailed dark timber windows against fine warm red brick courses; deeply projecting layered sills and small supports; multi-bay upper gallery windows; timber structural bands. Its text also describes carved courtyard pillars and struts and the Peacock Window (Mayur Jhyal). These are ORIGINAL design adaptations, not exact replicas or measured reconstructions.
+01 / PEACOCK WINDOW: replace the first window with a square, deeply layered carved timber window featuring a small clearly recognizable peacock body centered low in a circular fan of radiating perforated feather forms. This circular peacock lattice is nested inside a rectangular ornamental frame with fine geometric and foliate bands and an overhanging sill. Show a large straight-on front view and a smaller matching three-quarter view of the SAME asset. Preserve real openings between the feather/lattice elements. Avoid a simple semicircular sunburst.
+02 / GALLERY WINDOW: replace the shutter window with a wide, low, five-bay timber window band inspired by the upper facade proportions of Pujari Math. Slender carved mullions, small softly cusped openings, recessed fine lattice screens, an overhanging stepped sill supported on small carved blocks, densely but finely carved top and bottom friezes. Front view with slight depth reveal. No Western casement shutters or brass door handles.
+03 / CARVED TIMBER BAND: replace the large bold floral scroll lintel with a subtler densely incised long timber band, fine repeated geometric borders, small rosettes and foliate relief. Architectural frieze proportions. Avoid oversized acanthus scrolls or classical European cornices. Clearly show the thin repeating module edges.
+04 / COURTYARD STRUT: replace the ornate furniture-like post with a slender square timber pillar and believable diagonal carved strut supporting a horizontal beam. Restrained stepped capital, finely carved foliate bands, visible solid load-bearing timber core. Structural rather than furniture-like, no classical column orders, no statue.
+05 / BRICKWORK MODULE: finer, longer and thinner warm russet-red bricks with tight muted lime-colored joints, slight individual irregularity and subtle age. A small freestanding rectangular wall sample, front view with visible edge depth, and two matching loose bricks below. Reduce the chunky rough block appearance of version one. Small-scale patina, not ruin.
+06 / LATTICE & RELIEF: replace the large flower plaque with a square close-up of fine carved lattice intersecting around a small circular floral medallion, crisp chisel work and visibly open holes; a smaller edge view explains the shallow relief and thicker structural frame.
+Unify the wood as aged medium-to-deep warm brown with a dry matte finish and lighter worn edges. No orange varnish. Strong broad neutral frontal fill reveals every groove, never crushed black shadows. Tiny contact shadows only. Accurate-looking crisp material detail and consistent joinery. All six modules fit comfortably inside their cells, never cropped or overlapping. This is a clean asset design board, not a museum interior, not a collage of photographs. No people, paintings, logos, dimensions, historical dates or claims of authenticity. Labels exactly as given. Highest available detail.
+

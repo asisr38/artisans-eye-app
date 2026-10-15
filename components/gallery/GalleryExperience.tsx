@@ -2,10 +2,10 @@
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { Component, useCallback, useState, type ReactNode } from 'react'
+import { Component, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { track } from '@vercel/analytics'
-import type { GalleryView } from './GalleryCanvas'
+import { chapters } from './journey'
 
 const GalleryCanvas = dynamic(() => import('./GalleryCanvas'), { ssr: false })
 class SceneBoundary extends Component<
@@ -25,95 +25,150 @@ class SceneBoundary extends Component<
 }
 
 export default function GalleryExperience() {
-  const [view, setView] = useState<GalleryView>('room')
+  const section = useRef<HTMLElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
-  const [interactive, setInteractive] = useState(false)
   const reducedMotion = useReducedMotion()
+  const index = Math.round(progress)
+  const chapter = chapters[index]
   const handleReady = useCallback(() => setReady(true), [])
   const handleFailed = useCallback(() => setFailed(true), [])
-  function changeView(next: GalleryView) {
-    setView(next)
-    track('gallery_view_selected', { view: next })
+
+  useEffect(() => {
+    let scheduled = 0
+    const update = () => {
+      scheduled = 0
+      if (!section.current || !stage.current) return
+      const travel = section.current.offsetHeight - stage.current.offsetHeight
+      setProgress(
+        Math.max(
+          0,
+          Math.min(2, (-section.current.getBoundingClientRect().top / Math.max(1, travel)) * 2),
+        ),
+      )
+    }
+    const schedule = () => {
+      if (!scheduled) scheduled = requestAnimationFrame(update)
+    }
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    schedule()
+    return () => {
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      cancelAnimationFrame(scheduled)
+    }
+  }, [])
+
+  function visit(next: number) {
+    if (!section.current || !stage.current) return
+    const top = window.scrollY + section.current.getBoundingClientRect().top
+    const travel = section.current.offsetHeight - stage.current.offsetHeight
+    window.scrollTo({
+      top: top + (next / 2) * travel,
+      behavior: reducedMotion ? 'instant' : 'smooth',
+    })
+    track('gallery_chapter_selected', { chapter: chapters[next].label })
   }
+
   return (
-    <div className="gallery-experience">
-      <div
-        className="gallery-stage"
-        role="region"
-        aria-label="Interactive gallery with an Avalokiteshvara thangka"
-      >
-        <Image
-          src="/artifacts/gallery-preview.png"
-          alt="A thangka displayed between timber screens in a warm plaster gallery"
-          fill
-          priority
-          sizes="(max-width: 900px) 100vw, 70vw"
-          className="gallery-poster"
-        />
-        {!failed && (
-          <div
-            className={`gallery-webgl ${ready ? 'is-ready' : ''}`}
-            style={{ pointerEvents: interactive ? 'auto' : 'none' }}
-            aria-hidden="true"
-          >
-            <SceneBoundary onFailed={handleFailed}>
-              <GalleryCanvas
-                view={view}
-                reducedMotion={!!reducedMotion}
-                onReady={handleReady}
-                onFailed={handleFailed}
-              />
-            </SceneBoundary>
-          </div>
-        )}
-        <div className="gallery-corner-label">
-          <span className="live-dot" />
-          {failed ? 'Gallery preview' : 'The Bhaktapur room'}
-        </div>
-        <a className="gallery-study-link" href="#study">
-          Study the painting <span aria-hidden="true">↗</span>
-        </a>
-        <p className="gallery-hint" aria-live="polite">
-          {failed
-            ? 'Explore the painting in the image study below.'
-            : !ready
-              ? 'Preparing the room…'
-              : interactive
-                ? 'Drag to look around. Use the views below to reset.'
-                : 'A quiet place to look a little longer.'}
-        </p>
-      </div>
-      <div className="gallery-toolbar">
-        <div className="view-switch" aria-label="Gallery camera views">
-          <button
-            disabled={!ready || failed}
-            aria-pressed={view === 'room'}
-            onClick={() => changeView('room')}
-          >
-            01 <span>The room</span>
-          </button>
-          <button
-            disabled={!ready || failed}
-            aria-pressed={view === 'work'}
-            onClick={() => changeView('work')}
-          >
-            02 <span>The work</span>
-          </button>
-        </div>
-        <button
-          className="explore-toggle"
-          disabled={!ready || failed}
-          aria-pressed={interactive}
-          onClick={() => {
-            setInteractive(!interactive)
-            track('gallery_explore_toggle', { active: !interactive })
-          }}
+    <section ref={section} className="house-journey" aria-label="A house for art: guided gallery">
+      <div ref={stage} className="house-sticky">
+        <div
+          className="house-scene"
+          role="region"
+          aria-label="Interactive Bhaktapur house with a thangka and planted courtyard"
         >
-          {interactive ? 'Finish exploring' : 'Drag to explore'}{' '}
-          <span aria-hidden="true">{interactive ? '×' : '↔'}</span>
-        </button>
+          <Image
+            src="/artifacts/gallery-preview.png?v=4"
+            alt="A sunlit timber gallery opening onto a planted courtyard, with an Avalokiteshvara thangka on its focal wall"
+            fill
+            preload
+            sizes="100vw"
+            className="gallery-poster"
+          />
+          {!failed && (
+            <div className={`gallery-webgl ${ready ? 'is-ready' : ''}`} aria-hidden="true">
+              <SceneBoundary onFailed={handleFailed}>
+                <GalleryCanvas
+                  progress={progress}
+                  reducedMotion={!!reducedMotion}
+                  onReady={handleReady}
+                  onFailed={handleFailed}
+                />
+              </SceneBoundary>
+            </div>
+          )}
+          <div className="house-topline">
+            <span>The Artisan’s Eye / Bhaktapur study</span>
+            <a href="/room">
+              Walk freely <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <p className="house-scroll-hint" aria-live="polite">
+            {failed
+              ? 'Gallery preview · the photograph study is available below'
+              : !ready
+                ? 'Preparing the house…'
+                : reducedMotion
+                  ? 'Scroll or choose a view'
+                  : index === 2
+                    ? 'Continue scrolling to the details'
+                    : 'Scroll to move closer'}
+          </p>
+        </div>
+        <div className="house-caption">
+          <span className="house-chapter-number">
+            0{index + 1} / {chapter.label}
+          </span>
+          <h1>{chapter.title}</h1>
+          <p>{chapter.description}</p>
+          <a href="#study" className="text-link">
+            {index === 2 ? 'Study the details' : 'Go straight to the painting'}{' '}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <nav className="house-controls" aria-label="Guided gallery chapters">
+          <button
+            className="house-step"
+            aria-label="Previous gallery view"
+            disabled={index === 0}
+            onClick={() => visit(index - 1)}
+          >
+            ←
+          </button>
+          <div className="house-chapters">
+            {chapters.map((item, i) => (
+              <button
+                key={item.label}
+                aria-current={index === i ? 'step' : undefined}
+                onClick={() => visit(i)}
+              >
+                <span>0{i + 1}</span> {item.label}
+              </button>
+            ))}
+            <a href="#study">
+              <span>04</span> Details
+            </a>
+          </div>
+          {index < 2 ? (
+            <button
+              className="house-step"
+              aria-label="Next gallery view"
+              onClick={() => visit(index + 1)}
+            >
+              →
+            </button>
+          ) : (
+            <a className="house-step" href="#study" aria-label="Continue to painting details">
+              ↘
+            </a>
+          )}
+        </nav>
       </div>
-    </div>
+    </section>
   )
 }

@@ -4,15 +4,24 @@ import { useMemo } from 'react'
 import { Object3D } from 'three'
 import { PAINTING_CENTER_Y, PAINTING_Z } from './constants'
 
-/** Shared gallery lighting: skylight, neutral fill, and a restrained art light.
+/** Shared gallery lighting: skylight, neutral fill, art light, and timber washes.
  * Only the skylight casts a shadow, keeping the mobile budget at one map.
  */
 export default function GalleryLights() {
   const daylightTarget = useMemo(() => new Object3D(), [])
+  const courtyardTarget = useMemo(() => new Object3D(), [])
   const artworkTarget = useMemo(() => new Object3D(), [])
+  const timberTargets = useMemo(() => [new Object3D(), new Object3D()], [])
   return (
     <group>
       <primitive object={daylightTarget} position={[0, 0.2, -1.4]} />
+      <primitive object={courtyardTarget} position={[0, 1.2, -0.7]} />
+      <directionalLight
+        position={[6, 4, 0.3]}
+        target={courtyardTarget}
+        intensity={1.2}
+        color="#fff4de"
+      />
       <primitive object={artworkTarget} position={[0, PAINTING_CENTER_Y, PAINTING_Z]} />
       <ambientLight intensity={0.65} color="#eee3d1" />
       <hemisphereLight intensity={2.0} color="#f3eee3" groundColor="#685443" />
@@ -39,6 +48,21 @@ export default function GalleryLights() {
         distance={6}
         color="#ffe5c1"
       />
+      {/* Broad front lighting reveals the lattice without lifting exposure on the painting. */}
+      {[-1, 1].map((side, index) => (
+        <group key={side}>
+          <primitive object={timberTargets[index]} position={[side * 2.1, 1.65, -3.75]} />
+          <spotLight
+            position={[side * 1.8, 2.75, -1.1]}
+            target={timberTargets[index]}
+            intensity={55}
+            angle={0.72}
+            penumbra={1}
+            distance={7}
+            color="#fff0dc"
+          />
+        </group>
+      ))}
       <pointLight position={[0, 2.7, 3.3]} intensity={8} distance={12} color="#e9eff0" />
       <pointLight position={[0, 3.2, 0.55]} intensity={5} distance={8} color="#f4e7d5" />
     </group>

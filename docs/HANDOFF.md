@@ -1,6 +1,22 @@
 # Gallery revamp handoff
 
-Updated September 7, 2026. Branch: `codex/artisans-eye-gallery-revamp`.
+Updated September 8, 2026. Branch: `codex/artisans-eye-gallery-revamp`.
+
+## Current: v4 reference-driven carved geometry — September 8, 2026
+
+- Current editable source: `assets/blender/bhaktapur-gallery-v4.blend`; earlier files remain intact. The approved component image is now represented by real mesh relief and lattice, authored by `carved-components.py` and installed by `build-gallery.py`.
+- Two peacock screens flank the art, two five-bay windows occupy the left wall and courtyard, the focal lintel has raised rosettes, supporting struts have leaf relief, and the dado has finer brick courses.
+- Six components stay separately editable in a named collection and are asset-marked. Export contains 15 meshes, nine materials, 871,068 bytes, Draco, no photograph textures. Shared loader cache key is v4; homepage and `/room` use the same model.
+- All six asset meshes passed Blender validation. Native whole-room/detail renders confirm geometry; homepage and `/room` loaded the new asset without browser errors or warnings. The production build and source syntax checks passed. Components are procedural interpretations of the concept; fine chisel marks and wood grain from the reference image are not yet sculpted or baked.
+
+## Previous: sunlit house and guided journey — September 8, 2026
+
+- Implementation plan: `docs/HOUSE-IMPLEMENTATION-PLAN.md`. The homepage now has three scroll-linked views, chapter/previous/next controls and a direct photograph-study link. `/room` retains free navigation inside its original movement bounds.
+- Current source: `assets/blender/bhaktapur-gallery-v3.blend`. Opens the right wall onto a planted courtyard, loosens the roof joists and adds a bench textile and vessel. Generated with local background Blender after native window controls failed; the open interactive session was not used to generate v3.
+- Export: 435,136 bytes, nine mesh/material groups, Draco compressed, zero embedded images. Original product photo remains separate. Native preview refreshed; shared side daylight and existing wood washes keep the joinery visible.
+- Mobile caption sits below the scene to preserve artwork visibility. Body overflow no longer creates a false sticky-scroll ancestor. Demand rendering, static fallback and discrete reduced-motion camera stops remain.
+- Verified desktop/mobile framing, chapter buttons, keyboard/scroll progression, Details, fallback and `/room` direct view. Ten tests, targeted lint/format, TypeScript and production build passed. Reduced-motion camera behavior has regression coverage; OS preference switching was not exercised.
+- Preserve prior uncommitted Timer patch and wood lighting. Earlier dated sections below describe previous versions, not the current homepage controls.
 
 ## Delivered
 
@@ -47,7 +63,7 @@ Pre-existing tracked and untracked work was backed up locally outside the reposi
 - Replaced the room's Drei pointer-lock wrapper with native lock/change/mouse listeners. Lock requests use a synchronous store subscription to retain the click gesture, catching promise rejection as well as synchronous exceptions. Failure opens drag/keyboard navigation and removes the retry prompt for that visit. Pointer-lock error events cover legacy browsers too.
 - The main painting study loads eagerly because it can become the LCP image on direct #study visits.
 - .nvmrc now targets Node 24 LTS. Traced DEP0205 under Node 26 to @tailwindcss/node's module.register call; changing .nvmrc does not switch an already-running shell or server.
-- THREE.Clock originates in installed @react-three/fiber 9.6.1. Left visible pending an upstream compatible migration; no console filtering or dependency downgrades.
+- THREE.Clock originally came from installed @react-three/fiber 9.6.1; the Timer patch below now resolves it.
 - Three pointer-lock regression checks and production build passed. Targeted lint has no errors; pre-existing R3F camera mutation warnings remain. Test command: node --experimental-strip-types --test scripts/request-pointer-lock.test.mjs.
 
 ## Repository cleanup
@@ -55,3 +71,8 @@ Pre-existing tracked and untracked work was backed up locally outside the reposi
 - Shared Prettier rules and pnpm format/test commands; ES module type is explicit, with standalone CommonJS tooling retaining .cjs. Node 24+ is the supported runtime and pnpm is pinned.
 - Blender scripts derive the repository path from their script location and run through runpy. Native sources remain tracked; local archive/autosave files and browser captures stay on disk outside the commit.
 - Bundled Draco decoders include their upstream Apache license and are excluded from application linting. Removed the unused gallery-canvas interaction prop; interaction remains controlled by the gallery wrapper.
+
+## Timer deprecation fix
+
+- Versioned pnpm patch migrates Fiber 9.6.1 clock construction to a THREE.Timer-backed compatibility adapter across ESM and CommonJS builds. See patches/README.md for maintenance and upstream context.
+- Regression coverage checks warning-free store creation, delta/elapsed seconds, stop/restart, manual advance and demand-loop restart.

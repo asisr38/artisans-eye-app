@@ -30,4 +30,4 @@ Generic marketplace grids, simulated NFT commerce, unskippable spectacle, and de
 
 ## Accessibility & Inclusion
 
-Provide keyboard camera presets, an image alternative to WebGL, reduced-motion behavior, mobile touch support, visible focus, and clear form errors. Accessibility behavior already established in the repository remains a requirement.
+Provide keyboard chapter navigation, an image alternative to WebGL, reduced-motion behavior, mobile touch support, visible focus, and clear form errors. Accessibility behavior already established in the repository remains a requirement.
