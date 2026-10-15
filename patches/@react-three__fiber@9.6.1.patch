@@ -1,0 +1,115 @@
+diff --git a/dist/events-583399dd.cjs.prod.js b/dist/events-583399dd.cjs.prod.js
+index f3834fa28aa8504b48da031e326acb332a722965..c8628e6df393002d3aa9c8da03ae08ae4ec937b9 100644
+--- a/dist/events-583399dd.cjs.prod.js
++++ b/dist/events-583399dd.cjs.prod.js
+@@ -1,5 +1,7 @@
+ 'use strict';
+ 
++var TimerClock = require('./timer-clock.cjs');
++
+ var React = require('react');
+ var THREE = require('three');
+ var traditional = require('zustand/traditional');
+@@ -1038,7 +1040,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE__namespace.Clock(),
++      clock: new TimerClock(THREE__namespace.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/dist/events-b389eeca.esm.js b/dist/events-b389eeca.esm.js
+index 76f308c96cb09a20e854133e48ec9ef7682edecc..c69242f1515a346b4b6231316c0ce72b4c9b1c68 100644
+--- a/dist/events-b389eeca.esm.js
++++ b/dist/events-b389eeca.esm.js
+@@ -1,3 +1,4 @@
++import TimerClock from './timer-clock.cjs';
+ import * as React from 'react';
+ import React__default from 'react';
+ import * as THREE from 'three';
+@@ -1013,7 +1014,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE.Clock(),
++      clock: new TimerClock(THREE.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/dist/events-f19bcc32.cjs.dev.js b/dist/events-f19bcc32.cjs.dev.js
+index 07d45d4c0bd7d57301d338040e8aa71c88fce7c5..5dc111a9276eb0c62d635c15e3e0f9de45434195 100644
+--- a/dist/events-f19bcc32.cjs.dev.js
++++ b/dist/events-f19bcc32.cjs.dev.js
+@@ -1,5 +1,7 @@
+ 'use strict';
+ 
++var TimerClock = require('./timer-clock.cjs');
++
+ var React = require('react');
+ var THREE = require('three');
+ var traditional = require('zustand/traditional');
+@@ -1038,7 +1040,7 @@ const createStore = (invalidate, advance) => {
+       linear: false,
+       flat: false,
+       controls: null,
+-      clock: new THREE__namespace.Clock(),
++      clock: new TimerClock(THREE__namespace.Timer),
+       pointer,
+       mouse: pointer,
+       frameloop: 'always',
+diff --git a/dist/timer-clock.cjs b/dist/timer-clock.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..89f0daf310269d4b62dea454df8f66ad5b511072
+--- /dev/null
++++ b/dist/timer-clock.cjs
+@@ -0,0 +1,49 @@
++// Preserve Fiber 9's public clock contract while computing time with Timer.
++// No document listeners: Fiber owns the render loop and pause/resume lifecycle.
++class TimerClock {
++  constructor(Timer, autoStart = true) {
++    this.Timer = Timer;
++    this.autoStart = autoStart;
++    this.startTime = 0;
++    this.oldTime = 0;
++    this.elapsedTime = 0;
++    this.running = false;
++    this.timer = new this.Timer();
++  }
++
++  start() {
++    this.timer = new this.Timer();
++    this.startTime = performance.now();
++    this.timer.update(this.startTime);
++    this.oldTime = this.startTime;
++    this.elapsedTime = 0;
++    this.running = true;
++  }
++
++  stop() {
++    this.getElapsedTime();
++    this.running = false;
++    this.autoStart = false;
++  }
++
++  getElapsedTime() {
++    this.getDelta();
++    return this.elapsedTime;
++  }
++
++  getDelta() {
++    if (this.autoStart && !this.running) {
++      this.start();
++      return 0;
++    }
++    if (!this.running) return 0;
++    const now = performance.now();
++    this.timer.update(now);
++    const delta = this.timer.getDelta();
++    this.oldTime = now;
++    this.elapsedTime += delta;
++    return delta;
++  }
++}
++
++module.exports = TimerClock;
