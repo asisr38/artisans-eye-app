@@ -5,13 +5,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
+    # Runtime secrets such as RESEND_API_KEY. The file is optional so the
+    # container still starts without it; inquiries then return 503 (see README).
+    env_file:
+      - path: .env
+        required: false
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
     restart: unless-stopped
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    # The health check (GET /api/health) is inherited from the Dockerfile.

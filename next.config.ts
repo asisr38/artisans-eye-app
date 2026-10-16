@@ -4,6 +4,11 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async rewrites() {
+    // /health is the public probe path (load balancers, uptime checks); the handler lives under /api.
+    // Declared here rather than in vercel.json so it also applies to Docker and `next start`.
+    return [{ source: '/health', destination: '/api/health' }]
+  },
   output: 'standalone',
   productionBrowserSourceMaps: false,
   typescript: {
